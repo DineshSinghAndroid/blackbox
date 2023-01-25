@@ -1,16 +1,21 @@
-import 'package:blackbox/View/auth/signup_screen.dart';
+
+
+
+
+
+import 'package:blackbox/View/auth/login_screen.dart';
 import 'package:blackbox/View/ui/home_barcode_scanner.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _SignupScreenState extends State<SignupScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -29,21 +34,19 @@ class _LoginScreenState extends State<LoginScreen>
         parent: _controller,
         curve: Curves.ease,
       ),
-    )
-      ..addListener(
-        () {
-          setState(() {});
-        },
-      )
-      ..addStatusListener(
-        (status) {
-          if (status == AnimationStatus.completed) {
-            _controller.reverse();
-          } else if (status == AnimationStatus.dismissed) {
-            _controller.forward();
-          }
-        },
-      );
+    )..addListener(
+          () {
+        setState(() {});
+      },
+    )..addStatusListener(
+          (status) {
+        if (status == AnimationStatus.completed) {
+          _controller.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+      },
+    );
 
     _controller.forward();
   }
@@ -75,49 +78,34 @@ class _LoginScreenState extends State<LoginScreen>
                     children: [
                       SizedBox(),
                       Text(
-                        'AlertWare',
+                        'SIGN IN',
                         style: TextStyle(
-                          fontSize: 40,
+                          fontSize: 25,
                           fontWeight: FontWeight.w600,
                           color: Color(0xffA9DED8),
                         ),
                       ),
                       SizedBox(),
-                      component1(Icons.account_circle_outlined, 'User Id...',
+                      component1(Icons.account_circle_outlined, 'User name...',
                           false, false),
-                       component1(
+                      component1(Icons.email_outlined, 'Email...', false, true),
+                      component1(
                           Icons.lock_outline, 'Password...', true, false),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+SizedBox(width: 35,)
+                          ,
                           RichText(
                             text: TextSpan(
-                              text: 'Forgotten password!',
-                              style: TextStyle(
-                                color: Color(0xffA9DED8),
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  HapticFeedback.lightImpact();
-                                  Fluttertoast.showToast(
-                                      msg:
-                                          'Forgotten password! button pressed');
-                                },
-                            ),
-                          ),
-                          SizedBox(width: _width / 10),
-                          RichText(
-                            text: TextSpan(
-                              text: 'Create a new Account',
+                              text: 'Login to existing Account !',
                               style: TextStyle(color: Color(0xffA9DED8)),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)
-                                => SignupScreen(),))
-                                ;
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
                                   HapticFeedback.lightImpact();
                                   Fluttertoast.showToast(
-                                    msg: 'Creating new account',
+                                    msg: 'Login to continue',
                                   );
                                 },
                             ),
@@ -160,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen>
                               Navigator.push(context, MaterialPageRoute(builder: (context) => BarcodeScanner(),));
                               HapticFeedback.lightImpact();
                               Fluttertoast.showToast(
-                                msg: 'Login Done',
+                                msg: 'SIGN-IN button pressed',
                               );
                             },
                             child: Container(
@@ -172,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 shape: BoxShape.circle,
                               ),
                               child: Text(
-                                'Login',
+                                'SIGN-IN',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
