@@ -1,9 +1,7 @@
-import 'package:blackbox/View/auth/signup_screen.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
 
 class BarcodeScanner extends StatefulWidget {
@@ -15,6 +13,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  String _scanBarcode = 'Unknown';
 
   @override
   void initState() {
@@ -32,12 +31,12 @@ class _BarcodeScannerState extends State<BarcodeScanner>
       ),
     )
       ..addListener(
-            () {
+        () {
           setState(() {});
         },
       )
       ..addStatusListener(
-            (status) {
+        (status) {
           if (status == AnimationStatus.completed) {
             _controller.reverse();
           } else if (status == AnimationStatus.dismissed) {
@@ -65,73 +64,90 @@ class _BarcodeScannerState extends State<BarcodeScanner>
         behavior: MyBehavior(),
         child: SafeArea(
           child: Padding(
-            padding:EdgeInsets.symmetric(
-              vertical: 40.h,horizontal: 35.w
-            ),
-
+            padding: EdgeInsets.symmetric(vertical: 40.h, horizontal: 35.w),
             child: Column(
               children: [
-                Text("BBX VISIBLE",style: TextStyle(
-                  fontSize: 43.sp,
-                  fontWeight: FontWeight.w700
-                    ,color: Colors.white
-                ),),
-                SizedBox(height: _height/3,),
+                Text(
+                  "BBX VISIBLE",
+                  style: TextStyle(
+                      fontSize: 43.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white),
+                ),
+                SizedBox(
+                  height: _height / 3,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
                       height: 150,
-                       width: 130.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5))
-                            ,
-                        color: Colors.blue
-                      ),
+                      width: 130.w,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          color: Colors.blue),
                       child: Column(
                         children: [
-                          Container(
-                            height:100,
-                              // width: 100,
-                              child: Lottie.network('https://assets7.lottiefiles.com/packages/lf20_2sapbqfh.json')),
-                          SizedBox(height: 5.h,)
-                          ,
-                          Text("Device Add \n& Naming",style: TextStyle(
-                            fontSize: 16,color: Colors.white,fontWeight: FontWeight.w500
-                          ),),
-                          SizedBox(height: 5.h,)
-                          ,
+                          InkWell(
+                            onTap: () => barcodeScan(),
+                            child: Container(
+                                height: 100,
+                                // width: 100,
+                                child: Lottie.network(
+                                    'https://assets7.lottiefiles.com/packages/lf20_2sapbqfh.json')),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          const Text(
+                            "Device Add \n& Naming",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
                         ],
                       ),
                     ),
-
-
                     Container(
-height: 150,
-                        width: 130.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5))
-                            ,
-                        color: Colors.blue
-                      ),
+                      height: 150,
+                      width: 130.w,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          color: Colors.blue),
                       child: Column(
                         children: [
                           Container(
-                            height:100,
+                              height: 100,
                               // width: 100,
-                              child: Lottie.network('https://assets9.lottiefiles.com/packages/lf20_49rdyysj.json')),
+                              child: Lottie.network(
+                                  'https://assets9.lottiefiles.com/packages/lf20_49rdyysj.json')),
                           Spacer(),
-                          Text("View Data",style: TextStyle(
-                            fontSize: 16,color: Colors.white,fontWeight: FontWeight.w500
-                          ),),
-                          SizedBox(height: 15.h,)
-                          ,
+                          const Text(
+                            "View Data",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
+
                         ],
                       ),
                     ),
-                  ],
-                )
 
+                  ],
+                ),
+                SizedBox(height: 30,)
+                ,
+                Text('Scan result : $_scanBarcode\n',
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -140,7 +156,22 @@ height: 150,
     );
   }
 
-   }
+  Future<void> barcodeScan() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
+  }
+}
 
 class MyBehavior extends ScrollBehavior {
   @override

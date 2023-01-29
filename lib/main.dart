@@ -1,11 +1,20 @@
+
 import 'package:blackbox/View/auth/login_screen.dart';
 import 'package:blackbox/View/ui/home_barcode_scanner.dart';
+import 'package:drift/native.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'DATABASE/db.dart';
 
-void main() => runApp(MyApp());
+Future <void> main()async {
+  final db = Database(NativeDatabase.memory());
 
+  (await db.select(db.scannerResult).get()).forEach((print));
+  // await db.into(db.scannerResult).insert(const
+  // ScannerResultCompanion(title: 'Singh', description: "Sir"));
+   runApp(   const MyApp());
+}
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
