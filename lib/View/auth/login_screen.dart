@@ -1,3 +1,5 @@
+import 'package:blackbox/Utils/app_theme.dart';
+import 'package:blackbox/Utils/button.dart';
 import 'package:blackbox/View/auth/signup_screen.dart';
 import 'package:blackbox/View/ui/home_barcode_scanner.dart';
 import 'package:flutter/gestures.dart';
@@ -59,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen>
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Color(0xff292C31),
+      backgroundColor: Colors.white,
       body: ScrollConfiguration(
         behavior: MyBehavior(),
         child: SingleChildScrollView(
@@ -79,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen>
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xffA9DED8),
+                          color: AppTheme.black,
                         ),
                       ),
                       SizedBox(),
@@ -94,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen>
                             text: TextSpan(
                               text: 'Forgotten password!',
                               style: TextStyle(
-                                color: Color(0xffA9DED8),
+                                color: AppTheme.orange,
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
@@ -109,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen>
                           RichText(
                             text: TextSpan(
                               text: 'Create a new Account',
-                              style: TextStyle(color: Color(0xffA9DED8)),
+                              style: TextStyle(color: AppTheme.orange),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context)
@@ -131,57 +133,36 @@ class _LoginScreenState extends State<LoginScreen>
                   flex: 3,
                   child: Stack(
                     children: [
-                      Center(
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: _width * .07),
-                          height: _width * .7,
-                          width: _width * .7,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.transparent,
-                                Colors.transparent,
-                                Color(0xff09090A),
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                          ),
-                        ),
+                      // Center(
+                      //   child: Container(
+                      //     margin: EdgeInsets.only(bottom: _width * .07),
+                      //     height: _width * .7,
+                      //     width: _width * .7,
+                      //     decoration: BoxDecoration(
+                      //       shape: BoxShape.circle,
+                      //       gradient: LinearGradient(
+                      //         colors: [
+                      //           Colors.transparent,
+                      //           Colors.transparent,
+                      //           Color(0xff09090A),
+                      //         ],
+                      //         begin: Alignment.topCenter,
+                      //         end: Alignment.bottomCenter,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+
+                      Align(
+                        alignment: Alignment.center,
+                        child: CommonButton("Login", (){  Navigator.push(context, MaterialPageRoute(builder: (context) => BarcodeScanner(),));
+
+                        HapticFeedback.lightImpact();
+                        Fluttertoast.showToast(
+                          msg: 'Login Done',
+                        );}),
                       ),
-                      Center(
-                        child: Transform.scale(
-                          scale: _animation.value,
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BarcodeScanner(),));
-                              HapticFeedback.lightImpact();
-                              Fluttertoast.showToast(
-                                msg: 'Login Done',
-                              );
-                            },
-                            child: Container(
-                              height: _width * .2,
-                              width: _width * .2,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Color(0xffA9DED8),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Text(
-                                'Login',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+
                     ],
                   ),
                 ),
@@ -202,24 +183,26 @@ class _LoginScreenState extends State<LoginScreen>
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: _width / 30),
       decoration: BoxDecoration(
-        color: Color(0xff212428),
+        // color: AppTheme.gray,
         borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.black,width: 1)
       ),
       child: TextField(
-        style: TextStyle(color: Colors.white.withOpacity(.9)),
+        style: TextStyle(color: Colors.black.withOpacity(.9)),
         obscureText: isPassword,
-        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+        keyboardType: isEmail ?
+        TextInputType.emailAddress : TextInputType.text,
         decoration: InputDecoration(
           prefixIcon: Icon(
             icon,
-            color: Colors.white.withOpacity(.7),
+            color: Colors.black.withOpacity(.7),
           ),
           border: InputBorder.none,
           hintMaxLines: 1,
           hintText: hintText,
           hintStyle: TextStyle(
             fontSize: 14,
-            color: Colors.white.withOpacity(.5),
+            color: AppTheme.black,
           ),
         ),
       ),

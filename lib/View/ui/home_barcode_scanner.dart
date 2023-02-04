@@ -59,7 +59,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Color(0xff292C31),
+      backgroundColor: Colors.white,
       body: ScrollConfiguration(
         behavior: MyBehavior(),
         child: SafeArea(
@@ -72,7 +72,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                   style: TextStyle(
                       fontSize: 43.sp,
                       fontWeight: FontWeight.w700,
-                      color: Colors.white),
+                      color: Colors.black),
                 ),
                 SizedBox(
                   height: _height / 3,
@@ -81,7 +81,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      height: 150,
+                      height: 150.h,
                       width: 130.w,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -91,7 +91,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                           InkWell(
                             onTap: () => barcodeScan(),
                             child: Container(
-                                height: 100,
+                                height: 100.h,
                                 // width: 100,
                                 child: Lottie.network(
                                     'https://assets7.lottiefiles.com/packages/lf20_2sapbqfh.json')),
@@ -103,7 +103,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                             "Device Add \n& Naming",
                             style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w500),
                           ),
                           SizedBox(
@@ -113,7 +113,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                       ),
                     ),
                     Container(
-                      height: 150,
+                      height: 150.h,
                       width: 130.w,
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -121,7 +121,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                       child: Column(
                         children: [
                           Container(
-                              height: 100,
+                              height: 100.h,
                               // width: 100,
                               child: Lottie.network(
                                   'https://assets9.lottiefiles.com/packages/lf20_49rdyysj.json')),
@@ -130,7 +130,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                             "View Data",
                             style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w500),
                           ),
                           SizedBox(
@@ -145,9 +145,9 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                 ),
                 SizedBox(height: 30,)
                 ,
-                Text('Scan result : $_scanBarcode\n',
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold)),
+                // Text('Scan result : $_scanBarcode\n',
+                //     style: const TextStyle(
+                //         fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
           ),

@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../Utils/app_theme.dart';
+import '../../Utils/button.dart';
+
 class SignupScreen extends StatefulWidget {
   @override
   _SignupScreenState createState() => _SignupScreenState();
@@ -62,7 +65,7 @@ class _SignupScreenState extends State<SignupScreen>
     double _width = MediaQuery.of(context).size.width;
     double _height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Color(0xff292C31),
+      backgroundColor: Colors.white,
       body: ScrollConfiguration(
         behavior: MyBehavior(),
         child: SingleChildScrollView(
@@ -82,7 +85,7 @@ class _SignupScreenState extends State<SignupScreen>
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xffA9DED8),
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(),
@@ -99,7 +102,7 @@ SizedBox(width: 35,)
                           RichText(
                             text: TextSpan(
                               text: 'Login to existing Account !',
-                              style: TextStyle(color: Color(0xffA9DED8)),
+                              style: TextStyle(color: AppTheme.orange),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
@@ -119,58 +122,39 @@ SizedBox(width: 35,)
                   flex: 3,
                   child: Stack(
                     children: [
-                      Center(
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: _width * .07),
-                          height: _width * .7,
-                          width: _width * .7,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.transparent,
-                                Colors.transparent,
-                                Color(0xff09090A),
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                          ),
-                        ),
+                      // Center(
+                      //   child: Container(
+                      //     margin: EdgeInsets.only(bottom: _width * .07),
+                      //     height: _width * .7,
+                      //     width: _width * .7,
+                      //     decoration: BoxDecoration(
+                      //       shape: BoxShape.circle,
+                      //       gradient: LinearGradient(
+                      //         colors: [
+                      //           Colors.transparent,
+                      //           Colors.transparent,
+                      //           Color(0xff09090A),
+                      //         ],
+                      //         begin: Alignment.topCenter,
+                      //         end: Alignment.bottomCenter,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: CommonButton("SIGN-IN", (){
+
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                              BarcodeScanner(),));
+                          HapticFeedback.lightImpact();
+                          Fluttertoast.showToast(
+                            msg: 'SIGN-IN button pressed',
+                          );
+
+                        }),
                       ),
-                      Center(
-                        child: Transform.scale(
-                          scale: _animation.value,
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BarcodeScanner(),));
-                              HapticFeedback.lightImpact();
-                              Fluttertoast.showToast(
-                                msg: 'SIGN-IN button pressed',
-                              );
-                            },
-                            child: Container(
-                              height: _width * .2,
-                              width: _width * .2,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Color(0xffA9DED8),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Text(
-                                'SIGN-IN',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                     ],
                   ),
                 ),
               ],
@@ -190,24 +174,26 @@ SizedBox(width: 35,)
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: _width / 30),
       decoration: BoxDecoration(
-        color: Color(0xff212428),
-        borderRadius: BorderRadius.circular(15),
+        // color: AppTheme.gray,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.black,width: 1)
       ),
       child: TextField(
-        style: TextStyle(color: Colors.white.withOpacity(.9)),
+        style: TextStyle(color: Colors.black.withOpacity(.9)),
         obscureText: isPassword,
-        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+        keyboardType: isEmail ?
+        TextInputType.emailAddress : TextInputType.text,
         decoration: InputDecoration(
           prefixIcon: Icon(
             icon,
-            color: Colors.white.withOpacity(.7),
+            color: Colors.black.withOpacity(.7),
           ),
           border: InputBorder.none,
           hintMaxLines: 1,
           hintText: hintText,
           hintStyle: TextStyle(
             fontSize: 14,
-            color: Colors.white.withOpacity(.5),
+            color: AppTheme.black,
           ),
         ),
       ),

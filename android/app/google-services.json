@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "954299644246",
+    "project_id": "alertware-98b74",
+    "storage_bucket": "alertware-98b74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954299644246:android:060301fd42d023645cbef7",
+        "android_client_info": {
+          "package_name": "com.example.blackbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "954299644246-arlriab1hqh85i416dmh3pp232j6r1i3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh_jaVvCLwamnz_uozY6_zRlZhfL7AObo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "954299644246-arlriab1hqh85i416dmh3pp232j6r1i3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
