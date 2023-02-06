@@ -16,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  TextEditingController AddName = TextEditingController();
 
   @override
   void initState() {

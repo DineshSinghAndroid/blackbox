@@ -13,6 +13,8 @@ class _BarcodeScannersState extends State<BarcodeScanners> {
   String? _qrInfo = 'Scan a QR/Bar code';
   bool _camState = false;
 
+  TextEditingController addNameController = TextEditingController();
+
   _qrCallback(String? code) {
     setState(() {
       _camState = false;
@@ -46,7 +48,6 @@ class _BarcodeScannersState extends State<BarcodeScanners> {
       body:
       // _camState
       //     ?
-
       Center(
         child: SizedBox(
           height: 1000,

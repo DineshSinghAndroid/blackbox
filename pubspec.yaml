@@ -40,6 +40,8 @@ dependencies:
   flutter_screenutil: ^5.6.0
   flutter_qr_bar_scanner: ^3.0.2
   lottie: ^2.2.0
+  http: ^0.13.5
+  get: ^4.6.5
 
 
   #for database
@@ -76,8 +78,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/
+#  assets:
+#    - assets/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
