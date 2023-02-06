@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:blackbox/Utils/app_theme.dart';
 import 'package:blackbox/Utils/button.dart';
 import 'package:blackbox/View/auth/signup_screen.dart';
@@ -12,12 +15,13 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   TextEditingController AddName = TextEditingController();
 
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -49,6 +53,34 @@ class _LoginScreenState extends State<LoginScreen>
       );
 
     _controller.forward();
+  }
+
+  login(String phone, password) async {
+    Map data = {"username": phone, "password": password};
+    print("GOING DATA IS ::::>>>>$data");
+
+    String body = json.encode(data);
+    var url = 'https://bbxlite.azurewebsites.net/api/userLogin?code=L3nlW6WNdjZT8BJJ4_CR1u3F8WL60s2jdfJCGND1pLGFAzFunHfX-w==';
+    var response = await http.post(
+      Uri.parse(url),
+      body: body,
+      headers: {"Content-Type": "application/json", "accept": "application/json", "Access-Control-Allow-Origin": "*"},
+    );
+    print(response.body);
+    print(response.statusCode);
+    String mess = json.decode(response.body)["message"].toString();
+    String OTPfromServer = json.decode(response.body)["otp"].toString();
+
+    print("OTP IS ::::>>>" + OTPfromServer);
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(msg: mess);
+
+      print('success');
+    } else {
+      print('error');
+
+      Fluttertoast.showToast(msg: mess);
+    }
   }
 
   @override
@@ -86,10 +118,8 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                       ),
                       SizedBox(),
-                      component1(Icons.account_circle_outlined, 'User Id...',
-                          false, false),
-                       component1(
-                          Icons.lock_outline, 'Password...', true, false),
+                      component1(Icons.account_circle_outlined, 'Phone Number...', false, false),
+                      component1(Icons.lock_outline, 'Password...', true, false),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -102,9 +132,7 @@ class _LoginScreenState extends State<LoginScreen>
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   HapticFeedback.lightImpact();
-                                  Fluttertoast.showToast(
-                                      msg:
-                                          'Forgotten password! button pressed');
+                                  Fluttertoast.showToast(msg: 'Forgotten password! button pressed');
                                 },
                             ),
                           ),
@@ -115,9 +143,11 @@ class _LoginScreenState extends State<LoginScreen>
                               style: TextStyle(color: AppTheme.orange),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)
-                                => SignupScreen(),))
-                                ;
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SignupScreen(),
+                                      ));
                                   HapticFeedback.lightImpact();
                                   Fluttertoast.showToast(
                                     msg: 'Creating new account',
@@ -156,14 +186,14 @@ class _LoginScreenState extends State<LoginScreen>
 
                       Align(
                         alignment: Alignment.center,
-                        child: CommonButton("Login", (){  Navigator.push(context, MaterialPageRoute(builder: (context) => BarcodeScanner(),));
-
-                        HapticFeedback.lightImpact();
-                        Fluttertoast.showToast(
-                          msg: 'Login Done',
-                        );}),
-                      ),
-
+                        child: CommonButton(
+                          "Login",
+                          () {
+                            login(username.text.trim(), password.text.trim());
+                            HapticFeedback.lightImpact();
+                          },
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -175,8 +205,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget component1(
-      IconData icon, String hintText, bool isPassword, bool isEmail) {
+  Widget component1(IconData icon, String hintText, bool isPassword, bool isEmail) {
     double _width = MediaQuery.of(context).size.width;
     return Container(
       height: _width / 8,
@@ -184,15 +213,13 @@ class _LoginScreenState extends State<LoginScreen>
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: _width / 30),
       decoration: BoxDecoration(
-        // color: AppTheme.gray,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.black,width: 1)
-      ),
+          // color: AppTheme.gray,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.black, width: 1)),
       child: TextField(
         style: TextStyle(color: Colors.black.withOpacity(.9)),
         obscureText: isPassword,
-        keyboardType: isEmail ?
-        TextInputType.emailAddress : TextInputType.text,
+        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
         decoration: InputDecoration(
           prefixIcon: Icon(
             icon,
@@ -213,8 +240,7 @@ class _LoginScreenState extends State<LoginScreen>
 
 class MyBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }

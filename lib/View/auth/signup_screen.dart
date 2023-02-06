@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'package:blackbox/View/auth/verifyOTPScreen.dart';
+import 'package:http/http.dart' as http;
 import 'package:blackbox/Utils/ApiService.dart';
 import 'package:blackbox/View/auth/login_screen.dart';
 import 'package:blackbox/View/ui/home_barcode_scanner.dart';
@@ -20,8 +21,7 @@ class SignupScreen extends StatefulWidget {
   _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen>
-    with SingleTickerProviderStateMixin {
+class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -64,6 +64,38 @@ class _SignupScreenState extends State<SignupScreen>
     _controller.forward();
   }
 
+  register(String name, phone, email, password) async {
+    Map data = {"name": name, "phone": phone, "username": phone, "email": email, "password": password};
+    print("GOING DATA IS ::::>>>>$data");
+
+    String body = json.encode(data);
+    var url = 'https://bbxlite.azurewebsites.net/api/registerUser?code=cy0as7vM-Mt_Mi7bu6OAJOdLeCUCdlhNc3fhPhy8HpKsAzFuA4OAaA==';
+    var response = await http.post(
+      Uri.parse(url),
+      body: body,
+      headers: {"Content-Type": "application/json", "accept": "application/json", "Access-Control-Allow-Origin": "*"},
+    );
+    print(response.body);
+    print(response.statusCode);
+    String mess = json.decode(response.body)["message"].toString();
+    String OTPfromServer = json.decode(response.body)["otp"].toString();
+
+    print("OTP IS ::::>>>" + OTPfromServer);
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(msg: mess);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VerifyOTPScreen(realOTP: OTPfromServer),
+          ));
+      print('success');
+    } else {
+      print('error');
+
+      Fluttertoast.showToast(msg: mess);
+    }
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -103,11 +135,11 @@ class _SignupScreenState extends State<SignupScreen>
                           ),
                         ),
                         SizedBox(),
-                        component1(Icons.account_circle_outlined, 'Name', false, false, name),
-                        component1(Icons.account_circle_outlined, 'User name', false, false, username),
-                        component1(Icons.account_circle_outlined, 'Phone', false, false, phone),
-                        component1(Icons.email_outlined, 'Email', false, true, email),
-                        component1(Icons.lock_outline, 'Password', true, false, password),
+                        component1(Icons.account_circle_outlined, 'Name', false, false, name, TextInputType.text),
+                        // component1(Icons.account_circle_outlined, 'User name', false, false, username),
+                        component1(Icons.account_circle_outlined, 'Phone', false, false, phone, TextInputType.number),
+                        component1(Icons.email_outlined, 'Email', false, true, email, TextInputType.emailAddress),
+                        component1(Icons.lock_outline, 'Password', true, false, password, TextInputType.visiblePassword),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -141,49 +173,19 @@ class _SignupScreenState extends State<SignupScreen>
                     flex: 3,
                     child: Stack(
                       children: [
-                        // Center(
-                        //   child: Container(
-                        //     margin: EdgeInsets.only(bottom: _width * .07),
-                        //     height: _width * .7,
-                        //     width: _width * .7,
-                        //     decoration: BoxDecoration(
-                        //       shape: BoxShape.circle,
-                        //       gradient: LinearGradient(
-                        //         colors: [
-                        //           Colors.transparent,
-                        //           Colors.transparent,
-                        //           Color(0xff09090A),
-                        //         ],
-                        //         begin: Alignment.topCenter,
-                        //         end: Alignment.bottomCenter,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                         Align(
                           alignment: Alignment.center,
-                          child: CommonButton("SIGN-IN", () {
-                            if (formkey.currentState!.validate()) {
-                              signupRepo(
-                                name: name.text,
-                                phone: phone.text,
-                                username: username.text,
-                                email: email.text,
-                                password: password.text,
-
-                              ).then((value) async {
-                                print(value.message);
-                                if (value.otp != null) {
-                                  Get.toNamed(MyRouter.loginScreen,);
-                                }
-                              });
-                              print('error');
-                            }
-                            Fluttertoast.showToast(
-                              msg: 'SIGN-IN button pressed',
-                            );
-                          }),
-                        ),
+                          child: CommonButton(
+                            "SIGN-IN",
+                            () {
+                              if (name.text.length < 3 || email.text.length < 3 || phone.text.length < 10 || password.text.length < 8) {
+                                Fluttertoast.showToast(msg: "Please Fill all data");
+                              } else {
+                                register(name.text.trim(), phone.text.trim(), email.text.trim(), password.text.trim().toString());
+                              }
+                            },
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -196,7 +198,7 @@ class _SignupScreenState extends State<SignupScreen>
     );
   }
 
-  Widget component1(IconData icon, String hintText, bool isPassword, bool isEmail, Controller) {
+  Widget component1(IconData icon, String hintText, bool isPassword, bool isEmail, Controller, type) {
     double _width = MediaQuery.of(context).size.width;
     return Container(
       height: Get.height * 0.08,
@@ -212,7 +214,7 @@ class _SignupScreenState extends State<SignupScreen>
         style: TextStyle(color: Colors.black.withOpacity(.9)),
         obscureText: isPassword,
         controller: Controller,
-        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+        keyboardType: type,
         decoration: InputDecoration(
           prefixIcon: Icon(
             icon,
@@ -226,35 +228,14 @@ class _SignupScreenState extends State<SignupScreen>
             color: AppTheme.black,
           ),
         ),
-
-
       ),
     );
-  }
-
-  callSignupAPI() {
-    final service = ApiService();
-
-    service.apiCallsignup({
-      "name": name.text,
-      "username": username.text,
-      "email": email.text,
-      "phone": phone.text,
-      "password": password.text
-    }).then((value) async {
-      if (value.error != null) {
-        print("Get data " + value.error.toString());
-      } else {
-        Get.toNamed(MyRouter.loginScreen);
-      }
-    });
   }
 }
 
 class MyBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(
-      BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }
