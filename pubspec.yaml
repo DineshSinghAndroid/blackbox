@@ -42,11 +42,14 @@ dependencies:
   lottie: ^2.2.0
   http: ^0.13.5
   get: ^4.6.5
+  pin_code_fields:
+  form_field_validator:
 
 
   #for database
   drift: ^2.4.2
   sqlite3_flutter_libs: ^0.5.12
+  sqflite: ^2.2.4+1
   path_provider: ^2.0.12
   path:
   flutter_barcode_scanner: ^2.0.0

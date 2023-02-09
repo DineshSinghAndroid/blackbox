@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:blackbox/Model/ModelCommonResponse.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
@@ -6,17 +7,15 @@ import 'dart:io';
 import '../Model/ModelRegistration.dart';
 import '../Utils/Helper.dart';
 
-Future<ModelRegister> signupRepo({name, phone , email, password ,context}) async {
+Future<ModelCommonResponse> loginRepo({phone , password, context }) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
 
+
   try {
-    var auth = 'https://bbxlite.azurewebsites.net/api/registerUser?code=cy0as7vM-Mt_Mi7bu6OAJOdLeCUCdlhNc3fhPhy8HpKsAzFuA4OAaA==';
+    var auth = 'https://bbxlite.azurewebsites.net/api/userLogin?code=L3nlW6WNdjZT8BJJ4_CR1u3F8WL60s2jdfJCGND1pLGFAzFunHfX-w==';
 
     var map = <String, dynamic>{};
-    map['name'] = name;
-    map['phone'] = phone;
-    map['email'] = email;
     map['username'] = phone;
     map['password'] = password;
     print(map);
@@ -33,17 +32,17 @@ Future<ModelRegister> signupRepo({name, phone , email, password ,context}) async
     if (response.statusCode == 200) {
       Helpers.hideLoader(loader);
       print('SEREVER RESPONSE::' + response.statusCode.toString());
-      return ModelRegister.fromJson(jsonDecode(response.body));
+      return ModelCommonResponse.fromJson(jsonDecode(response.body));
     } else {
       Helpers.hideLoader(loader);
       print('SEREVER RESPONSE::' + response.body.toString());
-      return ModelRegister.fromJson(jsonDecode(response.body));
+      return ModelCommonResponse.fromJson(jsonDecode(response.body));
     }
   } on SocketException {
     Helpers.hideLoader(loader);
-    return ModelRegister(message: "No Internet Access");
+    return ModelCommonResponse(message: "No Internet Access");
   } catch (e) {
     Helpers.hideLoader(loader);
-    return ModelRegister(message: e.toString(),);
+    return ModelCommonResponse(message: e.toString(),);
   }
 }

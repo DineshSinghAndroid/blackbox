@@ -1,8 +1,12 @@
+import 'package:blackbox/router/MyRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:sqflite/sqflite.dart';
+
 
 class BarcodeScanner extends StatefulWidget {
   @override
@@ -14,6 +18,7 @@ class _BarcodeScannerState extends State<BarcodeScanner>
   late AnimationController _controller;
   late Animation<double> _animation;
   String _scanBarcode = 'Unknown';
+
 
   @override
   void initState() {
@@ -47,6 +52,8 @@ class _BarcodeScannerState extends State<BarcodeScanner>
 
     _controller.forward();
   }
+
+
 
   @override
   void dispose() {
@@ -145,9 +152,14 @@ class _BarcodeScannerState extends State<BarcodeScanner>
                 ),
                 SizedBox(height: 30,)
                 ,
-                // Text('Scan result : $_scanBarcode\n',
-                //     style: const TextStyle(
-                //         fontSize: 20, fontWeight: FontWeight.bold)),
+                InkWell(
+                  onTap: (){
+                    //AddBarcodeName(context);
+                  },
+                  child: Text('Scan result : $_scanBarcode\n',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold)),
+                ),
               ],
             ),
           ),
@@ -161,7 +173,10 @@ class _BarcodeScannerState extends State<BarcodeScanner>
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
+          '#ff6666', 'Cancel', true, ScanMode.QR).then((value) {
+            return _displayTextInputDialog(context);
+      });
+
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
@@ -173,10 +188,43 @@ class _BarcodeScannerState extends State<BarcodeScanner>
   }
 }
 
+ _displayTextInputDialog(BuildContext context) async {
+ TextEditingController qrcode = TextEditingController();
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('TextField in Dialog'),
+          content: TextField(
+            onChanged: (value) {
+              qrcode.text = _scanBarcode.toString();
+              qrcode.text = value.toString();
+            },
+            controller: qrcode,
+            decoration: InputDecoration(hintText: "Add Name"),
+          ),
+          actions: [
+            TextButton(onPressed: (){
+              Get.toNamed(MyRouter.barcodelist);
+            }, child: Text('Submit'))
+          ],
+        );
+      });
+}
+
+
+Future<Database?> openDB() {
+  _database
+}
+
+
 class MyBehavior extends ScrollBehavior {
   @override
   Widget buildViewportChrome(
       BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
+
+
+
 }

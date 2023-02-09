@@ -4,18 +4,14 @@ part 'db.g.dart';
 class ScannerResult extends Table{
   IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text()();
-  TextColumn get description  => text()();
-
-
 }
 
 abstract class ScannerResultView extends View {
   ScannerResult get scannerResult;
   @override
-  Query as() => select([
-    scannerResult.title
-  ]).from(scannerResult);
+  Query as() => select([scannerResult.title]).from(scannerResult);
 }
+
 
 @DriftDatabase(tables:[ScannerResult],views:[
   ScannerResultView

@@ -1,10 +1,13 @@
 
 import 'package:blackbox/View/auth/login_screen.dart';
-import 'package:blackbox/View/ui/home_barcode_scanner.dart';
+import 'package:blackbox/View/ui/Home/home_barcode_scanner.dart';
+import 'package:blackbox/router/MyRouter.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'DATABASE/db.dart';
 
 Future <void> main()async {
@@ -26,18 +29,24 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context , child) {
-        return MaterialApp(
+        return GetMaterialApp(
+          darkTheme: ThemeData.light(),
+          defaultTransition: Transition.rightToLeft,
           debugShowCheckedModeBanner: false,
-          title: 'Alert Ware',
-          // You can use the library anywhere in the app even in theme
+          initialRoute: "/splash",
+          getPages: MyRouter.route,
           theme: ThemeData(
-            primarySwatch: Colors.blue,
-            textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
+              fontFamily: 'Raleway',
+              primaryColor: Colors.black,
+              // highlightColor: AppTheme.primaryColor,
+              scrollbarTheme: const ScrollbarThemeData().copyWith(
+                thumbColor: MaterialStateProperty.all(Colors.white),
+              ),
+              colorScheme: ColorScheme.fromSwatch()
+                  .copyWith(secondary: Colors.white)
           ),
-          home: child,
         );
       },
-      child: LoginScreen(),
     );
   }
 }

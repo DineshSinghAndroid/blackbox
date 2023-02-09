@@ -1,14 +1,22 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:form_field_validator/form_field_validator.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:blackbox/Utils/app_theme.dart';
 import 'package:blackbox/Utils/button.dart';
 import 'package:blackbox/View/auth/signup_screen.dart';
-import 'package:blackbox/View/ui/home_barcode_scanner.dart';
+import 'package:blackbox/View/ui/Home/home_barcode_scanner.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Utils/Common_textfield.dart';
+import '../../repository/login_repository.dart';
+import '../../router/MyRouter.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -55,39 +63,41 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     _controller.forward();
   }
 
-  login(String phone, password) async {
-    Map data = {"username": phone, "password": password};
-    print("GOING DATA IS ::::>>>>$data");
-
-    String body = json.encode(data);
-    var url = 'https://bbxlite.azurewebsites.net/api/userLogin?code=L3nlW6WNdjZT8BJJ4_CR1u3F8WL60s2jdfJCGND1pLGFAzFunHfX-w==';
-    var response = await http.post(
-      Uri.parse(url),
-      body: body,
-      headers: {"Content-Type": "application/json", "accept": "application/json", "Access-Control-Allow-Origin": "*"},
-    );
-    print(response.body);
-    print(response.statusCode);
-    String mess = json.decode(response.body)["message"].toString();
-    String OTPfromServer = json.decode(response.body)["otp"].toString();
-
-    print("OTP IS ::::>>>" + OTPfromServer);
-    if (response.statusCode == 200) {
-      Fluttertoast.showToast(msg: mess);
-
-      print('success');
-    } else {
-      print('error');
-
-      Fluttertoast.showToast(msg: mess);
-    }
-  }
+  // login(String phone, password) async {
+  //   Map data = {"username": phone, "password": password};
+  //   print("GOING DATA IS ::::>>>>$data");
+  //
+  //   String body = json.encode(data);
+  //   var url = 'https://bbxlite.azurewebsites.net/api/userLogin?code=L3nlW6WNdjZT8BJJ4_CR1u3F8WL60s2jdfJCGND1pLGFAzFunHfX-w==';
+  //   var response = await http.post(
+  //     Uri.parse(url),
+  //     body: body,
+  //     headers: {"Content-Type": "application/json", "accept": "application/json", "Access-Control-Allow-Origin": "*"},
+  //   );
+  //   print(response.body);
+  //   print(response.statusCode);
+  //   String mess = json.decode(response.body)["message"].toString();
+  //   String OTPfromServer = json.decode(response.body)["otp"].toString();
+  //
+  //   print("OTP IS ::::>>>" + OTPfromServer);
+  //   if (response.statusCode == 200) {
+  //     Fluttertoast.showToast(msg: mess);
+  //
+  //     print('success');
+  //   } else {
+  //     print('error');
+  //
+  //     Fluttertoast.showToast(msg: mess);
+  //   }
+  // }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -100,104 +110,135 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
         child: SingleChildScrollView(
           child: SizedBox(
             height: _height,
-            child: Column(
-              children: [
-                Expanded(child: SizedBox()),
-                Expanded(
-                  flex: 4,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(),
-                      Text(
-                        'AlertWare',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.black,
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  Expanded(child: SizedBox()),
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(),
+                        Padding(
+                          padding:  EdgeInsets.only(left: Get.width * 0.30 , top: Get.width * 0.05),
+                          child: Container(
+                            height: 70,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.black12
+                            ),
+                            child: Image.asset('assets/images/logo.png'),
+                          ),
                         ),
-                      ),
-                      SizedBox(),
-                      component1(Icons.account_circle_outlined, 'Phone Number...', false, false),
-                      component1(Icons.lock_outline, 'Password...', true, false),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              text: 'Forgotten password!',
-                              style: TextStyle(
-                                color: AppTheme.orange,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  HapticFeedback.lightImpact();
-                                  Fluttertoast.showToast(msg: 'Forgotten password! button pressed');
-                                },
-                            ),
+                        SizedBox(height: Get.height * 0.08),
+                       // component1(Icons.account_circle_outlined, 'Phone Number...', false, false , username),
+                        CommonTextFieldWidget(
+                          prefix: Icon(
+                            Icons.account_circle_outlined,
+                            color: Colors.black54.withOpacity(0.4),
                           ),
-                          SizedBox(width: _width / 10),
-                          RichText(
-                            text: TextSpan(
-                              text: 'Create a new Account',
-                              style: TextStyle(color: AppTheme.orange),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SignupScreen(),
-                                      ));
-                                  HapticFeedback.lightImpact();
-                                  Fluttertoast.showToast(
-                                    msg: 'Creating new account',
-                                  );
-                                },
-                            ),
+                          hint: 'Phone Number...',
+                          controller: username,
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.next,
+                          bgColor: Colors.black54.withOpacity(0.4),
+                          validator: MultiValidator([
+                            RequiredValidator(errorText: 'Please Enter Phone Number'),
+                            MinLengthValidator(10, errorText: 'Invalid Number'),
+                          ]),
+                        ),
+                        SizedBox(height: 30,),
+                        CommonTextFieldWidget(
+                          prefix: Icon(
+                            Icons.lock_outline,
+                            color: Colors.black54.withOpacity(0.4),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Stack(
-                    children: [
-                      // Center(
-                      //   child: Container(
-                      //     margin: EdgeInsets.only(bottom: _width * .07),
-                      //     height: _width * .7,
-                      //     width: _width * .7,
-                      //     decoration: BoxDecoration(
-                      //       shape: BoxShape.circle,
-                      //       gradient: LinearGradient(
-                      //         colors: [
-                      //           Colors.transparent,
-                      //           Colors.transparent,
-                      //           Color(0xff09090A),
-                      //         ],
-                      //         begin: Alignment.topCenter,
-                      //         end: Alignment.bottomCenter,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-
-                      Align(
-                        alignment: Alignment.center,
-                        child: CommonButton(
-                          "Login",
-                          () {
-                            login(username.text.trim(), password.text.trim());
-                            HapticFeedback.lightImpact();
+                          hint: 'Password',
+                          controller: password,
+                          keyboardType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          bgColor: Colors.black54.withOpacity(0.4),
+                          validator: MultiValidator([
+                            RequiredValidator(errorText: 'Please Enter Password'),
+                            //MinLengthValidator(10, errorText: 'Invalid Number'),
+                          ]),
+                        ),
+                        //component1(Icons.lock_outline, 'Password...', true, false , password),
+                        SizedBox(height: 20,),
+                        Align(
+                          alignment: Alignment.center,
+                          child: CommonButton(
+                            "Login", () {
+                            // login(username.text.trim(), password.text.trim());
+                            // HapticFeedback.lightImpact();
+                            if(formKey.currentState!.validate()){
+                              loginRepo(
+                                phone: username.text,
+                                password: password.text,
+                                context: context,
+                              ).then((value) async {
+                                log(jsonEncode(value));
+                                if (value.message == "User successfully logged in.") {
+                                  SharedPreferences pref = await SharedPreferences.getInstance();
+                                  pref.setString('cookie', jsonEncode(value.message));
+                                  Get.offAllNamed(MyRouter.barcodeScreen);
+                                }
+                                else {
+                                  Fluttertoast.showToast(msg: "Something went Wrong");
+                                }
+                              });
+                            }
+                            else {
+                              Fluttertoast.showToast(msg: "Please Fill All Fields!");
+                            }
                           },
+                          ),
                         ),
-                      )
-                    ],
+                        // SizedBox(height: 5,),
+                        Padding(
+                          padding: EdgeInsets.only(left: Get.width * 0.07 , top: Get.width * 0.05),
+                          child: RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14),
+                              children: [
+                                TextSpan(
+                                  text: 'New Consumer? ',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                TextSpan(
+                                    text: 'Click Here to Register',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.blueAccent,
+                                        fontWeight: FontWeight.w500
+                                      //decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Get.toNamed(MyRouter.signupScreen);
+                                      }),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:  EdgeInsets.only(left: 25.0 , top: 8),
+                          child: Text('View Device Data' ,
+                          style: TextStyle( color:  Colors.black , fontSize: 14 , fontWeight: FontWeight.w600),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -205,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-  Widget component1(IconData icon, String hintText, bool isPassword, bool isEmail) {
+  Widget component1(IconData icon, String hintText, bool isPassword, bool isEmail , Controller) {
     double _width = MediaQuery.of(context).size.width;
     return Container(
       height: _width / 8,
@@ -219,6 +260,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       child: TextField(
         style: TextStyle(color: Colors.black.withOpacity(.9)),
         obscureText: isPassword,
+        controller: Controller,
         keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
         decoration: InputDecoration(
           prefixIcon: Icon(
