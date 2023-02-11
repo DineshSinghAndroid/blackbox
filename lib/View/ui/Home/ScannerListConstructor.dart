@@ -1,6 +1,7 @@
-class ScannerInput{
-  dynamic macID;
+class Student{
+  dynamic ? macID;
   String? name;
 
-  ScannerInput({this.macID , this.name});
+  Student({required this.macID , required this.name});
 }
+

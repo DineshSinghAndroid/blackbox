@@ -44,6 +44,8 @@ dependencies:
   get: ^4.6.5
   pin_code_fields:
   form_field_validator:
+  flutter_staggered_animations:
+
 
 
   #for database

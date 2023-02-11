@@ -101,8 +101,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
+     double _height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: ScrollConfiguration(
@@ -171,6 +170,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           alignment: Alignment.center,
                           child: CommonButton(
                             "Login", () {
+                            Get.offAllNamed(MyRouter.barcodeScreen);
                             // login(username.text.trim(), password.text.trim());
                             // HapticFeedback.lightImpact();
                             if(formKey.currentState!.validate()){
