@@ -189,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                         password.text.toString()]));
                                 }
                                 else {
-                                  Fluttertoast.showToast(msg: "Something went Wrong");
+                                  Fluttertoast.showToast(msg: "Please Register Your Account");
                                 }
                               });
                             }
