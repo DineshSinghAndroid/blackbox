@@ -25,7 +25,6 @@ class BarcodeScanner extends StatefulWidget {
 String barcodeScanRes = '';
 
 class _BarcodeScannerState extends State<BarcodeScanner> {
-
   var username;
   var password;
 
@@ -43,7 +42,8 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.QR);
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
@@ -57,7 +57,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
 
   @override
   Widget build(BuildContext context) {
-    log(studentsdata!.length.toString());
+    log(studentsdata.length.toString());
 
     double _height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -67,7 +67,9 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
           padding: EdgeInsets.symmetric(vertical: 40.h, horizontal: 35.w),
           child: Column(
             children: [
-              SizedBox(height: 40,),
+              SizedBox(
+                height: 40,
+              ),
               Text(
                 "BBX VISIBLE",
                 style: TextStyle(
@@ -230,7 +232,8 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                 onPressed: () {
                   print(barcodeScanRes.toString());
                   setState(() {});
-                  if (_scanBarcode != '' && deviceNameController.text != '') {
+
+                  if (_scanBarcode != '-1' && deviceNameController.text != '') {
                     deviceRegister(
                       phone: username,
                       password: password,
@@ -238,17 +241,20 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       assetsName: deviceNameController.text,
                       context: context,
                     ).then((value) {
-                         log(jsonEncode(value));
-                          if(value.message == 'Successfully registered device with your account'){
-                            Get.back();
-                          }
+                      log(jsonEncode(value));
+                      if (value.message ==
+                          'Successfully registered device with your account') {
+                        Get.back();
+                      }
                     });
                     studentsdata.add(Student(
                         macID: _scanBarcode,
                         name: deviceNameController.text.toString()));
                     Navigator.pop(context);
                     deviceNameController.clear();
-                  } else {
+                  } else if (_scanBarcode == '-1') {
+                    Fluttertoast.showToast(msg: "Please Scan Again");
+                  } else if (deviceNameController.text == '') {
                     Fluttertoast.showToast(msg: "Please Enter Device Name");
                   }
                 },

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:blackbox/Utils/WebConstants.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -10,11 +11,13 @@ import 'package:blackbox/View/auth/signup_screen.dart';
 import 'package:blackbox/View/ui/Home/home_barcode_scanner.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Model/ModelLogin.dart';
 import '../../Utils/Common_textfield.dart';
+import '../../Utils/api_call_fram.dart';
+import '../../Utils/connection_validater.dart';
 import '../../repository/login_repository.dart';
 import '../../router/MyRouter.dart';
 
@@ -23,13 +26,16 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
+
   late AnimationController _controller;
   late Animation<double> _animation;
   TextEditingController AddName = TextEditingController();
 
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -63,34 +69,6 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     _controller.forward();
   }
 
-  // login(String phone, password) async {
-  //   Map data = {"username": phone, "password": password};
-  //   print("GOING DATA IS ::::>>>>$data");
-  //
-  //   String body = json.encode(data);
-  //   var url = 'https://bbxlite.azurewebsites.net/api/userLogin?code=L3nlW6WNdjZT8BJJ4_CR1u3F8WL60s2jdfJCGND1pLGFAzFunHfX-w==';
-  //   var response = await http.post(
-  //     Uri.parse(url),
-  //     body: body,
-  //     headers: {"Content-Type": "application/json", "accept": "application/json", "Access-Control-Allow-Origin": "*"},
-  //   );
-  //   print(response.body);
-  //   print(response.statusCode);
-  //   String mess = json.decode(response.body)["message"].toString();
-  //   String OTPfromServer = json.decode(response.body)["otp"].toString();
-  //
-  //   print("OTP IS ::::>>>" + OTPfromServer);
-  //   if (response.statusCode == 200) {
-  //     Fluttertoast.showToast(msg: mess);
-  //
-  //     print('success');
-  //   } else {
-  //     print('error');
-  //
-  //     Fluttertoast.showToast(msg: mess);
-  //   }
-  // }
-
   @override
   void dispose() {
     _controller.dispose();
@@ -101,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-     double _height = MediaQuery.of(context).size.height;
+    double _height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       body: ScrollConfiguration(
@@ -121,18 +99,17 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       children: [
                         SizedBox(),
                         Padding(
-                          padding:  EdgeInsets.only(left: Get.width * 0.30 , top: Get.width * 0.05),
+                          padding: EdgeInsets.only(
+                              left: Get.width * 0.30, top: Get.width * 0.05),
                           child: Container(
                             height: 70,
                             width: 150,
-                            decoration: BoxDecoration(
-                              color: Colors.black12
-                            ),
+                            decoration: BoxDecoration(color: Colors.black12),
                             child: Image.asset('assets/images/logo.png'),
                           ),
                         ),
                         SizedBox(height: Get.height * 0.08),
-                       // component1(Icons.account_circle_outlined, 'Phone Number...', false, false , username),
+                        // component1(Icons.account_circle_outlined, 'Phone Number...', false, false , username),
                         CommonTextFieldWidget(
                           prefix: Icon(
                             Icons.account_circle_outlined,
@@ -144,11 +121,14 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Please Enter Phone Number'),
+                            RequiredValidator(
+                                errorText: 'Please Enter Phone Number'),
                             MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(
+                          height: 30,
+                        ),
                         CommonTextFieldWidget(
                           prefix: Icon(
                             Icons.lock_outline,
@@ -160,53 +140,50 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Please Enter Password'),
+                            RequiredValidator(
+                                errorText: 'Please Enter Password'),
                             //MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
                         ),
                         //component1(Icons.lock_outline, 'Password...', true, false , password),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Align(
                           alignment: Alignment.center,
                           child: CommonButton(
-                            "Login", () {
-                           // Get.offAllNamed(MyRouter.barcodeScreen);
-                            // login(username.text.trim(), password.text.trim());
-                            // HapticFeedback.lightImpact();
-                            if(formKey.currentState!.validate()){
-                              loginRepo(
-                                phone: username.text,
-                                password: password.text,
-                                context: context,
-                              ).then((value) async {
-                                log(jsonEncode(value));
-                                if (value.message == "User successfully logged in.") {
-                                  SharedPreferences pref = await SharedPreferences.getInstance();
-                                  pref.setString('cookie', jsonEncode(value.message));
-                                  Get.offAllNamed(MyRouter.barcodeScreen ,
-                                      arguments: ([
-                                        username.text.toString(),
-                                        password.text.toString()]));
+                            "Login",
+                            () {
+                              if (formKey.currentState!.validate()) {
+                                username.text.isNotEmpty &&
+                                        username.text.length == 10 &&
+                                        password.text.isNotEmpty &&
+                                        password.text.length > 8
+                                    ? {
+
+                                  loginRepo(
+                                    phone: username.text,
+                                    password: password.text,
+                                    context: context,
+                                  ).then((value) async {
+
+
+                                  })
                                 }
-                                else {
-                                  Fluttertoast.showToast(msg: "Please Register Your Account");
-                                }
-                              });
-                            }
-                            else {
-                              Fluttertoast.showToast(msg: "Please Fill All Fields!");
-                            }
-                          },
+                                    : Fluttertoast.showToast(
+                                        msg: "Incorrect Username or Password");
+                              }
+                            },
                           ),
                         ),
                         // SizedBox(height: 5,),
                         Padding(
-                          padding: EdgeInsets.only(left: Get.width * 0.07 , top: Get.width * 0.05),
+                          padding: EdgeInsets.only(
+                              left: Get.width * 0.07, top: Get.width * 0.05),
                           child: RichText(
                             text: TextSpan(
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14),
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
                               children: [
                                 TextSpan(
                                   text: 'New Consumer? ',
@@ -221,8 +198,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                         fontSize: 14,
                                         color: Colors.blueAccent,
                                         fontWeight: FontWeight.w500
-                                      //decoration: TextDecoration.underline,
-                                    ),
+                                        //decoration: TextDecoration.underline,
+                                        ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         Get.toNamed(MyRouter.signupScreen);
@@ -232,9 +209,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(left: 25.0 , top: 8),
-                          child: Text('View Device Data' ,
-                          style: TextStyle( color:  Colors.black , fontSize: 14 , fontWeight: FontWeight.w600),
+                          padding: EdgeInsets.only(left: 25.0, top: 8),
+                          child: Text(
+                            'View Device Data',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
                           ),
                         )
                       ],
@@ -249,7 +230,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-  Widget component1(IconData icon, String hintText, bool isPassword, bool isEmail , Controller) {
+  Widget component1(IconData icon, String hintText, bool isPassword,
+      bool isEmail, Controller) {
     double _width = MediaQuery.of(context).size.width;
     return Container(
       height: _width / 8,
@@ -281,11 +263,5 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
       ),
     );
   }
-}
 
-class MyBehavior extends ScrollBehavior {
-  @override
-  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
-    return child;
-  }
 }

@@ -123,17 +123,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // if (finalOtp == widget.realOTP) {
-                    //   Fluttertoast.showToast(msg: "Verification Done");
-                    //   Navigator.pushAndRemoveUntil(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => BarcodeScanner(),
-                    //       ),
-                    //           (route) => false);
-                    // } else {
-                    //   Fluttertoast.showToast(msg: "Verification Failed, please try again");
-                    // }
+
                     if (otpController.text != otp) {
                       Fluttertoast.showToast(msg: 'Otp is not matched');
                     } else if (otpController.text == otp) {

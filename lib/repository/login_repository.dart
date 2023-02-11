@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:blackbox/Model/ModelCommonResponse.dart';
+import 'package:blackbox/Utils/WebConstants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../Model/ModelRegistration.dart';
 import '../Utils/Helper.dart';
+import '../main.dart';
 
 Future<ModelCommonResponse> loginRepo({phone , password, context }) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
@@ -30,12 +33,15 @@ Future<ModelCommonResponse> loginRepo({phone , password, context }) async {
     print(response.statusCode.toString());
 
     if (response.statusCode == 200) {
-      Helpers.hideLoader(loader);
-      print('SEREVER RESPONSE::' + response.statusCode.toString());
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool(WebConstants.IS_USER_LOGGED_IN, true);
+
+       Helpers.hideLoader(loader);
+      print('SERVER RESPONSE::${response.statusCode}');
       return ModelCommonResponse.fromJson(jsonDecode(response.body));
     } else {
       Helpers.hideLoader(loader);
-      print('SEREVER RESPONSE::' + response.body.toString());
+      print('SEREVER RESPONSE::${response.body}');
       return ModelCommonResponse.fromJson(jsonDecode(response.body));
     }
   } on SocketException {

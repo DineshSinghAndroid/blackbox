@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import '../Model/ModelCommonResponse.dart';
 import '../Utils/Helper.dart';
+import '../Utils/WebConstants.dart';
 
 Future<ModelCommonResponse> verifyOtp({username, password, otp,context }) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
@@ -27,13 +29,14 @@ Future<ModelCommonResponse> verifyOtp({username, password, otp,context }) async 
     print(response.statusCode.toString());
 
     if (response.statusCode == 200) {
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool(WebConstants.IS_USER_LOGGED_IN, true);
       Helpers.hideLoader(loader);
-      print('SEREVER RESPONSE::' + response.statusCode.toString());
-      return ModelCommonResponse.fromJson(jsonDecode(response.body));
+       return ModelCommonResponse.fromJson(jsonDecode(response.body));
     } else {
       Helpers.hideLoader(loader);
-      print('SEREVER RESPONSE::' + response.body.toString());
-      return ModelCommonResponse.fromJson(jsonDecode(response.body));
+       return ModelCommonResponse.fromJson(jsonDecode(response.body));
     }
   } on SocketException {
     Helpers.hideLoader(loader);
