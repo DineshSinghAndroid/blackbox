@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:blackbox/DATABASE/db.dart';
@@ -6,8 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../repository/device_register_repository.dart';
+import '../../../router/MyRouter.dart';
 import '../listed_barcodes.dart';
 import 'ScannerListConstructor.dart';
 
@@ -21,6 +25,16 @@ class BarcodeScanner extends StatefulWidget {
 String barcodeScanRes = '';
 
 class _BarcodeScannerState extends State<BarcodeScanner> {
+
+  var username;
+  var password;
+
+  void initState() {
+    username = Get.arguments[0].toString();
+    password = Get.arguments[1].toString();
+    // print('Response otp' + otp);
+  }
+
   String _scanBarcode = 'Unknown';
 
   TextEditingController deviceNameController = TextEditingController();
@@ -29,16 +43,11 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.QR);
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
@@ -58,8 +67,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
           padding: EdgeInsets.symmetric(vertical: 40.h, horizontal: 35.w),
           child: Column(
             children: [
-              SizedBox(height: 40,)
-              ,
+              SizedBox(height: 40,),
               Text(
                 "BBX VISIBLE",
                 style: TextStyle(
@@ -150,9 +158,6 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
               SizedBox(
                 height: 30,
               ),
-
-
-
             ],
           ),
         ),
@@ -226,6 +231,18 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                   print(barcodeScanRes.toString());
                   setState(() {});
                   if (_scanBarcode != '' && deviceNameController.text != '') {
+                    deviceRegister(
+                      phone: username,
+                      password: password,
+                      qrcode: _scanBarcode,
+                      assetsName: deviceNameController.text,
+                      context: context,
+                    ).then((value) {
+                         log(jsonEncode(value));
+                          if(value.message == 'Successfully registered device with your account'){
+                            Get.back();
+                          }
+                    });
                     studentsdata.add(Student(
                         macID: _scanBarcode,
                         name: deviceNameController.text.toString()));

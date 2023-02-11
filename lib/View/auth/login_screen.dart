@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           alignment: Alignment.center,
                           child: CommonButton(
                             "Login", () {
-                            Get.offAllNamed(MyRouter.barcodeScreen);
+                           // Get.offAllNamed(MyRouter.barcodeScreen);
                             // login(username.text.trim(), password.text.trim());
                             // HapticFeedback.lightImpact();
                             if(formKey.currentState!.validate()){
@@ -183,7 +183,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                 if (value.message == "User successfully logged in.") {
                                   SharedPreferences pref = await SharedPreferences.getInstance();
                                   pref.setString('cookie', jsonEncode(value.message));
-                                  Get.offAllNamed(MyRouter.barcodeScreen);
+                                  Get.offAllNamed(MyRouter.barcodeScreen ,
+                                      arguments: ([
+                                        username.text.toString(),
+                                        password.text.toString()]));
                                 }
                                 else {
                                   Fluttertoast.showToast(msg: "Something went Wrong");
