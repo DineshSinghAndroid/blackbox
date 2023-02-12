@@ -11,8 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Utils/Common_textfield.dart';
+import '../../Utils/WebConstants.dart';
 import '../../Utils/app_theme.dart';
 import '../../Utils/button.dart';
 import '../../repository/signup_repository.dart';
@@ -125,7 +127,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                   Expanded(
                     flex: 10,
                     child: Padding(
-                      padding:  EdgeInsets.only(top: Get.width * 0.05),
+                      padding: EdgeInsets.only(top: Get.width * 0.05),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -138,7 +140,9 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               color: Colors.black,
                             ),
                           ),
-                          SizedBox(height: Get.height * 0.05,),
+                          SizedBox(
+                            height: Get.height * 0.05,
+                          ),
                           CommonTextFieldWidget(
                             prefix: Icon(
                               Icons.account_circle_outlined,
@@ -154,7 +158,9 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               //MinLengthValidator(10, errorText: 'Invalid Number'),
                             ]),
                           ),
-                          SizedBox(height: 12,),
+                          SizedBox(
+                            height: 12,
+                          ),
                           //component1(Icons.account_circle_outlined, 'Name', false, false, name, TextInputType.text),
                           // component1(Icons.account_circle_outlined, 'User name', false, false, username),
                           CommonTextFieldWidget(
@@ -172,7 +178,9 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               MinLengthValidator(10, errorText: 'Invalid Number'),
                             ]),
                           ),
-                          SizedBox(height: 12,),
+                          SizedBox(
+                            height: 12,
+                          ),
                           //component1(Icons.account_circle_outlined, 'Phone', false, false, phone, TextInputType.number),
                           CommonTextFieldWidget(
                             prefix: Icon(
@@ -190,7 +198,9 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                               //MinLengthValidator(10, errorText: 'Invalid Number'),
                             ]),
                           ),
-                          SizedBox(height: 12,),
+                          SizedBox(
+                            height: 12,
+                          ),
                           //component1(Icons.email_outlined, 'Email', false, true, email, TextInputType.emailAddress),
                           CommonTextFieldWidget(
                             prefix: Icon(
@@ -201,53 +211,56 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                             controller: password,
                             keyboardType: TextInputType.visiblePassword,
                             textInputAction: TextInputAction.next,
-
                             bgColor: Colors.black54.withOpacity(0.4),
                             validator: MultiValidator([
                               RequiredValidator(errorText: 'Please enter password'),
                               MinLengthValidator(8, errorText: 'Password should be 8 characters long'),
                             ]),
                           ),
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
                           //component1(Icons.lock_outline, 'Password', true, false, password, TextInputType.visiblePassword),
                           Align(
                             alignment: Alignment.center,
                             child: CommonButton(
                               "SIGN-IN",
-                                  () {
-                                if(formkey.currentState!.validate()){
+                              () {
+                                if (formkey.currentState!.validate()) {
                                   if (name.text.length < 3 || email.text.length < 3 || phone.text.length < 10 || password.text.length < 8) {
                                     Fluttertoast.showToast(msg: "Please Fill all data");
                                   } else {
                                     //register(name.text.trim(), phone.text.trim(), email.text.trim(), password.text.trim().toString());
                                     signupRepo(
                                       name: name.text,
-                                      phone : phone.text,
-                                      email:  email.text,
-                                      password:  password.text,
+                                      phone: phone.text,
+                                      email: email.text,
+                                      password: password.text,
                                       context: context,
                                     ).then((value) async {
                                       log(jsonEncode(value));
                                       Fluttertoast.showToast(msg: value.message.toString());
                                       if (value.message == "OTP successfully send to your email.") {
-                                        Get.offAllNamed(MyRouter.verifyOtp, arguments:
-                                        ([value.otp.toString(),
-                                          phone.text ,
-                                          password.text]));
+                                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                                        prefs.setString(WebConstants.USERNAME, username.text);
+                                        prefs.setString(WebConstants.PASSWORD, password.text);
+                                        Get.offAllNamed(MyRouter.verifyOtp);
+
                                       }
                                       // else {
                                       //   Fluttertoast.showToast(msg: "Something went Wrong");
                                       // }
                                     });
                                   }
-                                }
-                                else{
+                                } else {
                                   Fluttertoast.showToast(msg: "Please Fill All Fields!");
                                 }
                               },
                             ),
                           ),
-                          SizedBox(height: 8,),
+                          SizedBox(
+                            height: 8,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -281,9 +294,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                   Expanded(
                     flex: 3,
                     child: Stack(
-                      children: [
-
-                      ],
+                      children: [],
                     ),
                   ),
                 ],

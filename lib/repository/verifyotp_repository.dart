@@ -33,10 +33,12 @@ Future<ModelCommonResponse> verifyOtp({username, password, otp,context }) async 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool(WebConstants.IS_USER_LOGGED_IN, true);
       Helpers.hideLoader(loader);
-       return ModelCommonResponse.fromJson(jsonDecode(response.body));
+      print('SEREVER RESPONSE::' + response.statusCode.toString());
+      return ModelCommonResponse.fromJson(jsonDecode(response.body));
     } else {
       Helpers.hideLoader(loader);
-       return ModelCommonResponse.fromJson(jsonDecode(response.body));
+      print('SEREVER RESPONSE::' + response.body.toString());
+      return ModelCommonResponse.fromJson(jsonDecode(response.body));
     }
   } on SocketException {
     Helpers.hideLoader(loader);

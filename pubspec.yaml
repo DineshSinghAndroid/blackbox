@@ -46,6 +46,7 @@ dependencies:
   form_field_validator:
   flutter_staggered_animations:
   connectivity:
+  progress_state_button: ^1.0.2
 
 
 

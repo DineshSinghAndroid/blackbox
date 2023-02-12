@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:blackbox/DATABASE/db.dart';
+import 'package:blackbox/View/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -9,7 +10,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../Utils/WebConstants.dart';
 import '../../../repository/device_register_repository.dart';
 import '../../../router/MyRouter.dart';
 import '../listed_barcodes.dart';
@@ -22,16 +27,21 @@ class BarcodeScanner extends StatefulWidget {
   State<BarcodeScanner> createState() => _BarcodeScannerState();
 }
 
+ButtonState stateOnlyText = ButtonState.idle;
+ButtonState stateTextWithIcon = ButtonState.idle;
 String barcodeScanRes = '';
-
+String username='';
+String password='';
 class _BarcodeScannerState extends State<BarcodeScanner> {
-  var username;
-  var password;
+
 
   void initState() {
-    username = Get.arguments[0].toString();
-    password = Get.arguments[1].toString();
-    // print('Response otp' + otp);
+    setState(() {
+      ButtonState.idle;
+      stateTextWithIcon = ButtonState.idle;
+
+    });
+    init();
   }
 
   String _scanBarcode = 'Unknown';
@@ -67,7 +77,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
           padding: EdgeInsets.symmetric(vertical: 40.h, horizontal: 35.w),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Text(
@@ -93,7 +103,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       children: [
                         InkWell(
                           onTap: () => scanQR().then((value) {
-                            if (_scanBarcode != '') {
+                            if (_scanBarcode != '-1') {
                               AddBarcodeName(context);
                             }
                           }),
@@ -124,7 +134,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ListedBarcodes(),
+                            builder: (context) => const ListedBarcodes(),
                           ));
                     },
                     child: Container(
@@ -140,7 +150,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                               // width: 100,
                               child: Lottie.network(
                                   'https://assets9.lottiefiles.com/packages/lf20_49rdyysj.json')),
-                          Spacer(),
+                          const Spacer(),
                           const Text(
                             "View Data",
                             style: TextStyle(
@@ -157,9 +167,28 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 30,
+              const SizedBox(
+                height: 70,
               ),
+              ProgressButton.icon(iconedButtons: {
+                ButtonState.idle: IconedButton(
+                    text: 'Logout',
+                    icon: const Icon(Icons.logout, color: Colors.white),
+                    color: Colors.deepPurple.shade500),
+                ButtonState.loading: IconedButton(
+                    text: 'Loading', color: Colors.deepPurple.shade700),
+                ButtonState.fail: IconedButton(
+                    text: 'Failed',
+                    icon: const Icon(Icons.cancel, color: Colors.white),
+                    color: Colors.red.shade300),
+                ButtonState.success: IconedButton(
+                    text: 'Success',
+                    icon: const Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                    ),
+                    color: Colors.green.shade400)
+              }, onPressed: onPressedIconWithText, state: stateTextWithIcon),
             ],
           ),
         ),
@@ -173,13 +202,13 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))),
-          content: Text("Please Enter Device Details"),
+          content: const Text("Please Enter Device Details"),
           actions: [
             TextFormField(
                 controller: deviceNameController,
-                decoration: (InputDecoration(
+                decoration: (const InputDecoration(
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(color: Colors.black)),
@@ -196,40 +225,42 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(color: Colors.black))))),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextFormField(
                 readOnly: true,
                 decoration: (InputDecoration(
-                    enabledBorder: OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(color: Colors.black)),
-                    disabledBorder: OutlineInputBorder(
+                    disabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(color: Colors.black)),
-                    errorBorder: OutlineInputBorder(
+                    errorBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(color: Colors.black)),
-                    focusedBorder: OutlineInputBorder(
+                    focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(color: Colors.black)),
                     hintText: _scanBarcode.toString(),
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w700,
                         fontSize: 16),
-                    border: OutlineInputBorder(
+                    border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                         borderSide: BorderSide(color: Colors.black))))),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Center(
               child: MaterialButton(
                 color: Colors.blue,
-                child: Text("ADD"),
+                child: const Text("ADD"),
                 onPressed: () {
+
+
                   print(barcodeScanRes.toString());
                   setState(() {});
 
@@ -265,4 +296,39 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       },
     );
   }
+
+  void onPressedIconWithText() {
+    setState(() {
+      ButtonState.loading;
+      stateTextWithIcon = ButtonState.loading;
+    });
+
+    Future.delayed(const Duration(seconds: 3)).then((value) async {
+      setState(() {
+        ButtonState.success;
+        stateTextWithIcon = ButtonState.success;
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prefs.remove(WebConstants.USERNAME);
+      prefs.remove(WebConstants.PASSWORD);
+      prefs.setBool(WebConstants.IS_USER_LOGGED_IN, false);
+    });
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ));
+  }
+
+      init() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+     username = prefs.getString(WebConstants.USERNAME).toString();
+     password = prefs.getString(WebConstants.PASSWORD).toString();
+     print("USERNAME AND PASSWORD IS " +username.toString() + password.toString());
+
+    });
+   }
 }

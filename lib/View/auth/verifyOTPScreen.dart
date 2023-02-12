@@ -8,8 +8,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Utils/Common_textfield.dart';
+import '../../Utils/WebConstants.dart';
 import '../../router/MyRouter.dart';
 import '../ui/Home/home_barcode_scanner.dart';
 
@@ -24,10 +26,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   var password;
 
   void initState() {
-    otp = Get.arguments[0];
-    username = Get.arguments[1];
-    password = Get.arguments[2];
-    print('Response otp' + otp);
+
   }
 
   TextEditingController otpController = TextEditingController();
@@ -132,8 +131,11 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                         password: password,
                         otp: otpController.text,
                         context: context,
-                      ).then((value) {
+                      ).then((value) async {
                         log(jsonEncode(value));
+
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.setBool(WebConstants.IS_USER_LOGGED_IN, true);
                         Fluttertoast.showToast(msg:value.message.toString());
                         if (value.message == "Account activated.") {
                           Get.offAllNamed(

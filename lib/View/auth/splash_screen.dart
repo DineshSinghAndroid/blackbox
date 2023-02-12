@@ -21,19 +21,15 @@ class _SplashScreenState extends State<SplashScreen> {
     init();
   }
 
-  Future<void> init() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    isUserLoggedIn = prefs.getBool(WebConstants.IS_USER_LOGGED_IN) ?? false;
-    setState(() {});
-    Timer(const Duration(seconds: 3), () async {
-      runMain();
-    });
-  }
 
   void runMain() {
+
     if (isUserLoggedIn == true) {
       Get.toNamed(MyRouter.barcodeScreen);
+      print(isUserLoggedIn);
     } else {
+      print("going to login page $isUserLoggedIn");
+
       Get.toNamed(MyRouter.loginScreen);
     }
   }
@@ -61,5 +57,16 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ],
     ));
+  }
+
+    init() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        isUserLoggedIn = prefs.getBool(WebConstants.IS_USER_LOGGED_IN)??false;
+
+      });
+      Timer(const Duration(seconds: 3), () async {
+        runMain();
+      });
   }
 }
