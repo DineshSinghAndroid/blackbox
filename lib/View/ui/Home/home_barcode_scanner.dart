@@ -30,16 +30,14 @@ class BarcodeScanner extends StatefulWidget {
 ButtonState stateOnlyText = ButtonState.idle;
 ButtonState stateTextWithIcon = ButtonState.idle;
 String barcodeScanRes = '';
-String username='';
-String password='';
+String username = '';
+String password = '';
+
 class _BarcodeScannerState extends State<BarcodeScanner> {
-
-
   void initState() {
     setState(() {
       ButtonState.idle;
       stateTextWithIcon = ButtonState.idle;
-
     });
     init();
   }
@@ -259,8 +257,6 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                 color: Colors.blue,
                 child: const Text("ADD"),
                 onPressed: () {
-
-
                   print(barcodeScanRes.toString());
                   setState(() {});
 
@@ -281,7 +277,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                     studentsdata.add(Student(
                         macID: _scanBarcode,
                         name: deviceNameController.text.toString()));
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     deviceNameController.clear();
                   } else if (_scanBarcode == '-1') {
                     Fluttertoast.showToast(msg: "Please Scan Again");
@@ -321,14 +317,14 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
         ));
   }
 
-      init() async {
-
+  init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-     username = prefs.getString(WebConstants.USERNAME).toString();
-     password = prefs.getString(WebConstants.PASSWORD).toString();
-     print("USERNAME AND PASSWORD IS " +username.toString() + password.toString());
-
+      username = prefs.getString(WebConstants.USERNAME).toString();
+      password = prefs.getString(WebConstants.PASSWORD).toString();
+      print("USERNAME AND PASSWORD IS " +
+          username.toString() +
+          password.toString());
     });
-   }
+  }
 }

@@ -21,16 +21,26 @@ class VerifyOTPScreen extends StatefulWidget {
 }
 
 class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
-  var otp;
-  var username ;
-  var password;
+  String otp = '';
+  String username = '';
+  String password = '';
 
   void initState() {
+    init();
+  }
 
+  init() async {
+    await SharedPreferences.getInstance().then((value) {
+      setState(() {
+        username = value.getString(WebConstants.USERNAME).toString();
+        password = value.getString(WebConstants.PASSWORD).toString();
+        print("USer name and password on otp screen is  ${username}" +
+            password.toString());
+      });
+    });
   }
 
   TextEditingController otpController = TextEditingController();
-
 
   TextEditingController otp1 = TextEditingController();
   TextEditingController otp2 = TextEditingController();
@@ -122,7 +132,6 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-
                     if (otpController.text != otp) {
                       Fluttertoast.showToast(msg: 'Otp is not matched');
                     } else if (otpController.text == otp) {
@@ -134,9 +143,10 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                       ).then((value) async {
                         log(jsonEncode(value));
 
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
                         prefs.setBool(WebConstants.IS_USER_LOGGED_IN, true);
-                        Fluttertoast.showToast(msg:value.message.toString());
+                        Fluttertoast.showToast(msg: value.message.toString());
                         if (value.message == "Account activated.") {
                           Get.offAllNamed(
                             MyRouter.barcodeScreen,
