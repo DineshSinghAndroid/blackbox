@@ -1,5 +1,6 @@
 
 import 'package:blackbox/View/auth/login_screen.dart';
+import 'package:blackbox/View/ui/FetchedData/fetchedData.dart';
 import 'package:blackbox/View/ui/Home/home_barcode_scanner.dart';
 import 'package:blackbox/router/MyRouter.dart';
 import 'package:drift/native.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.light(),
           defaultTransition: Transition.rightToLeft,
           debugShowCheckedModeBanner: false,
-          initialRoute: "/splash",
+          // initialRoute: "/splash",
+          home: FlutterBlueApp(),
           getPages: MyRouter.route,
           theme: ThemeData(
               fontFamily: 'Raleway',

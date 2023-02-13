@@ -29,11 +29,11 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
   late AnimationController _controller;
   late Animation<double> _animation;
 
-  TextEditingController name = TextEditingController();
-  TextEditingController username = TextEditingController();
-  TextEditingController phone = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  // TextEditingController username = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -68,37 +68,6 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     _controller.forward();
   }
 
-  // register(String name, phone, email, password) async {
-  //   Map data = {"name": name, "phone": phone, "username": phone, "email": email, "password": password};
-  //   print("GOING DATA IS ::::>>>>$data");
-  //
-  //   String body = json.encode(data);
-  //   var url = 'https://bbxlite.azurewebsites.net/api/registerUser?code=cy0as7vM-Mt_Mi7bu6OAJOdLeCUCdlhNc3fhPhy8HpKsAzFuA4OAaA==';
-  //   var response = await http.post(
-  //     Uri.parse(url),
-  //     body: body,
-  //     headers: {"Content-Type": "application/json", "accept": "application/json", "Access-Control-Allow-Origin": "*"},
-  //   );
-  //   print(response.body);
-  //   print(response.statusCode);
-  //   String mess = json.decode(response.body)["message"].toString();
-  //   String OTPfromServer = json.decode(response.body)["otp"].toString();
-  //
-  //   print("OTP IS ::::>>>" + OTPfromServer);
-  //   if (response.statusCode == 200) {
-  //     Fluttertoast.showToast(msg: mess);
-  //     Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => VerifyOTPScreen(realOTP: OTPfromServer),
-  //         ));
-  //     print('success');
-  //   } else {
-  //     print('error');
-  //
-  //     Fluttertoast.showToast(msg: mess);
-  //   }
-  // }
 
   @override
   void dispose() {
@@ -119,185 +88,263 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
         child: Form(
           key: formkey,
           child: SingleChildScrollView(
-            child: SizedBox(
-              height: _height,
-              child: Column(
-                children: [
-                  Expanded(child: SizedBox()),
-                  Expanded(
-                    flex: 10,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: Get.width * 0.05),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(),
-                          Text(
-                            'SIGN IN',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            height: Get.height * 0.05,
-                          ),
-                          CommonTextFieldWidget(
-                            prefix: Icon(
-                              Icons.account_circle_outlined,
-                              color: Colors.black54.withOpacity(0.4),
-                            ),
-                            hint: 'Name',
-                            controller: name,
-                            keyboardType: TextInputType.name,
-                            textInputAction: TextInputAction.next,
-                            bgColor: Colors.black54.withOpacity(0.4),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: 'Please enter name'),
-                              //MinLengthValidator(10, errorText: 'Invalid Number'),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          //component1(Icons.account_circle_outlined, 'Name', false, false, name, TextInputType.text),
-                          // component1(Icons.account_circle_outlined, 'User name', false, false, username),
-                          CommonTextFieldWidget(
-                            prefix: Icon(
-                              Icons.account_circle_outlined,
-                              color: Colors.black54.withOpacity(0.4),
-                            ),
-                            hint: 'Phone',
-                            controller: phone,
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.next,
-                            bgColor: Colors.black54.withOpacity(0.4),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: 'Please enter phone number'),
-                              MinLengthValidator(10, errorText: 'Invalid Number'),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          //component1(Icons.account_circle_outlined, 'Phone', false, false, phone, TextInputType.number),
-                          CommonTextFieldWidget(
-                            prefix: Icon(
-                              Icons.email_outlined,
-                              color: Colors.black54.withOpacity(0.4),
-                            ),
-                            hint: 'Email',
-                            controller: email,
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.next,
-                            bgColor: Colors.black54.withOpacity(0.4),
-                            validator: MultiValidator([
-                              EmailValidator(errorText: 'Please enter valid email'),
-                              RequiredValidator(errorText: 'Please enter name'),
-                              //MinLengthValidator(10, errorText: 'Invalid Number'),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: 12,
-                          ),
-                          //component1(Icons.email_outlined, 'Email', false, true, email, TextInputType.emailAddress),
-                          CommonTextFieldWidget(
-                            prefix: Icon(
-                              Icons.lock_outline,
-                              color: Colors.black54.withOpacity(0.4),
-                            ),
-                            hint: 'Password',
-                            controller: password,
-                            keyboardType: TextInputType.visiblePassword,
-                            textInputAction: TextInputAction.next,
-                            bgColor: Colors.black54.withOpacity(0.4),
-                            validator: MultiValidator([
-                              RequiredValidator(errorText: 'Please enter password'),
-                              MinLengthValidator(8, errorText: 'Password should be 8 characters long'),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          //component1(Icons.lock_outline, 'Password', true, false, password, TextInputType.visiblePassword),
-                          Align(
-                            alignment: Alignment.center,
-                            child: CommonButton(
-                              "SIGN-IN",
-                              () {
-                                if (formkey.currentState!.validate()) {
-                                  if (name.text.length < 3 || email.text.length < 3 || phone.text.length < 10 || password.text.length < 8) {
-                                    Fluttertoast.showToast(msg: "Please Fill all data");
-                                  } else {
-                                    //register(name.text.trim(), phone.text.trim(), email.text.trim(), password.text.trim().toString());
-                                    signupRepo(
-                                      name: name.text,
-                                      phone: phone.text,
-                                      email: email.text,
-                                      password: password.text,
-                                      context: context,
-                                    ).then((value) async {
-                                      log(jsonEncode(value));
-                                      Fluttertoast.showToast(msg: value.message.toString());
-                                      if (value.message == "OTP successfully send to your email.") {
-                                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                                        prefs.setString(WebConstants.USERNAME, username.text);
-                                        prefs.setString(WebConstants.PASSWORD, password.text);
-                                        Get.offAllNamed(MyRouter.verifyOtp);
+            child: SafeArea(
+              child: SizedBox(
+                height: _height,
+                child: Column(
+                  children: [
+                    // TextFormField(
+                    //   controller: nameController,
+                    //   decoration: InputDecoration(
+                    //     hintText: "Name"
+                    //
+                    //   ),
+                    // ),   TextFormField(
+                    //   controller: phoneController,
+                    //   decoration: InputDecoration(
+                    //     hintText: "phone"
+                    //
+                    //   ),
+                    // ),   TextFormField(
+                    //   controller: emailController,
+                    //   decoration: InputDecoration(
+                    //     hintText: "Email"
+                    //
+                    //   ),
+                    // ),   TextFormField(
+                    //   controller: passwordController,
+                    //   decoration: InputDecoration(
+                    //     hintText: "password"
+                    //
+                    //   ),
+                    // ),
+                    // Align(
+                    //   alignment: Alignment.center,
+                    //   child: CommonButton(
+                    //     "SIGN-IN",
+                    //         () {
+                    //       if (formkey.currentState!.validate()) {
+                    //         if (nameController.text.length < 3 || emailController.text.length < 3 || phoneController.text.length < 10 || passwordController.text.length < 8) {
+                    //           Fluttertoast.showToast(msg: "Please Fill all data");
+                    //         } else {
+                    //           //register(name.text.trim(), phone.text.trim(), email.text.trim(), password.text.trim().toString());
+                    //           signupRepo(
+                    //
+                    //             name: nameController.text.toString(),
+                    //             phone: phoneController.text.toString(),
+                    //             email: emailController.text,
+                    //             password: passwordController.text,
+                    //             username: phoneController.text,
+                    //             context: context,
+                    //           ).then((value) async {
+                    //             log(jsonEncode(value));
+                    //             Fluttertoast.showToast(msg: value.message.toString());
+                    //             if (value.message == "OTP successfully send to your email.") {
+                    //               //       SharedPreferences prefs = await SharedPreferences.getInstance();
+                    //               // String   uss =    prefs.setString(WebConstants.USERNAME, phone.text.toString()).toString();
+                    //               //   String pss =     prefs.setString(WebConstants.PASSWORD, password.text.toString()).toString();
+                    //               //       print("This is setet to shared prefres + "+uss.toString() +pss.toString());
+                    //               // Get.offAllNamed(MyRouter.verifyOtp);
+                    //               Navigator.push(
+                    //                   context,
+                    //                   MaterialPageRoute(
+                    //                     builder: (context) => VerifyOTPScreen(
+                    //                       usernames: phoneController.text.toString(),
+                    //                       passwords: passwordController.text.toString(),
+                    //                     ),
+                    //                   ));
+                    //             }
+                    //             // else {
+                    //             //   Fluttertoast.showToast(msg: "Something went Wrong");
+                    //             // }
+                    //           });
+                    //         }
+                    //       } else {
+                    //         Fluttertoast.showToast(msg: "Please Fill All Fields!");
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
 
-                                      }
-                                      // else {
-                                      //   Fluttertoast.showToast(msg: "Something went Wrong");
-                                      // }
-                                    });
-                                  }
-                                } else {
-                                  Fluttertoast.showToast(msg: "Please Fill All Fields!");
-                                }
-                              },
+                    Expanded(child: SizedBox()),
+                    Expanded(
+                      flex: 10,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: Get.width * 0.05),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(),
+                            Text(
+                              'SIGN IN',
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 35,
+                            SizedBox(
+                              height: Get.height * 0.05,
+                            ),
+                            CommonTextFieldWidget(
+                              prefix: Icon(
+                                Icons.account_circle_outlined,
+                                color: Colors.black54.withOpacity(0.4),
                               ),
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Login to existing Account !',
-                                  style: TextStyle(color: Colors.blueAccent),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => LoginScreen(),
-                                          ));
-                                      HapticFeedback.lightImpact();
-                                      Fluttertoast.showToast(
-                                        msg: 'Login to continue',
-                                      );
-                                    },
+                              hint: 'Name',
+                              controller: nameController,
+                              keyboardType: TextInputType.name,
+                              textInputAction: TextInputAction.next,
+                              bgColor: Colors.black54.withOpacity(0.4),
+                              validator: MultiValidator([
+                                RequiredValidator(errorText: 'Please enter name'),
+                                //MinLengthValidator(10, errorText: 'Invalid Number'),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            //component1(Icons.account_circle_outlined, 'Name', false, false, name, TextInputType.text),
+                            // component1(Icons.account_circle_outlined, 'User name', false, false, username),
+                            CommonTextFieldWidget(
+                              prefix: Icon(
+                                Icons.account_circle_outlined,
+                                color: Colors.black54.withOpacity(0.4),
+                              ),
+                              hint: 'Phone',
+                              controller: phoneController,
+                              keyboardType: TextInputType.number,
+                              textInputAction: TextInputAction.next,
+                              bgColor: Colors.black54.withOpacity(0.4),
+                              validator: MultiValidator([
+                                RequiredValidator(errorText: 'Please enter phone number'),
+                                MinLengthValidator(10, errorText: 'Invalid Number'),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            //component1(Icons.account_circle_outlined, 'Phone', false, false, phone, TextInputType.number),
+                            CommonTextFieldWidget(
+                              prefix: Icon(
+                                Icons.email_outlined,
+                                color: Colors.black54.withOpacity(0.4),
+                              ),
+                              hint: 'Email',
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                              bgColor: Colors.black54.withOpacity(0.4),
+                              validator: MultiValidator([
+                                EmailValidator(errorText: 'Please enter valid email'),
+                                RequiredValidator(errorText: 'Please enter name'),
+                                //MinLengthValidator(10, errorText: 'Invalid Number'),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            //component1(Icons.email_outlined, 'Email', false, true, email, TextInputType.emailAddress),
+                            CommonTextFieldWidget(
+                              prefix: Icon(
+                                Icons.lock_outline,
+                                color: Colors.black54.withOpacity(0.4),
+                              ),
+                              hint: 'Password',
+                              controller: passwordController,
+                              keyboardType: TextInputType.visiblePassword,
+                              textInputAction: TextInputAction.next,
+                              bgColor: Colors.black54.withOpacity(0.4),
+                              validator: MultiValidator([
+                                RequiredValidator(errorText: 'Please enter password'),
+                                MinLengthValidator(8, errorText: 'Password should be 8 characters long'),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            //component1(Icons.lock_outline, 'Password', true, false, password, TextInputType.visiblePassword),
+                            Align(
+                              alignment: Alignment.center,
+                              child: CommonButton(
+                                "SIGN-IN",
+                                () {
+                                  if (formkey.currentState!.validate()) {
+                                    if (nameController.text.length < 3 || emailController.text.length < 3 || phoneController.text.length < 10 || passwordController.text.length < 8) {
+                                      Fluttertoast.showToast(msg: "Please Fill all data");
+                                    } else {
+                                      //register(name.text.trim(), phone.text.trim(), email.text.trim(), password.text.trim().toString());
+                                      signupRepo(
+                                        name: nameController.text.toString(),
+                                        phone: phoneController.text.toString(),
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        context: context,
+                                      ).then((value) async {
+                                        log(jsonEncode(value));
+                                        Fluttertoast.showToast(msg: value.message.toString());
+                                        if (value.message == "OTP successfully send to your email.") {
+                                    //       SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    // String   uss =    prefs.setString(WebConstants.USERNAME, phone.text.toString()).toString();
+                                    //   String pss =     prefs.setString(WebConstants.PASSWORD, password.text.toString()).toString();
+                                    //       print("This is setet to shared prefres + "+uss.toString() +pss.toString());
+                                          // Get.offAllNamed(MyRouter.verifyOtp);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => VerifyOTPScreen(
+                                                  usernames: phoneController.text.toString(),
+                                                  passwords: passwordController.text.toString(),
+                                                ),
+                                              ));
+                                        }
+                                        // else {
+                                        //   Fluttertoast.showToast(msg: "Something went Wrong");
+                                        // }
+                                      });
+                                    }
+                                  } else {
+                                    Fluttertoast.showToast(msg: "Please Fill All Fields!");
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 35,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                RichText(
+                                  text: TextSpan(
+                                    text: 'Login to existing Account !',
+                                    style: TextStyle(color: Colors.blueAccent),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => LoginScreen(),
+                                            ));
+                                        HapticFeedback.lightImpact();
+                                        Fluttertoast.showToast(
+                                          msg: 'Login to continue',
+                                        );
+                                      },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Stack(
-                      children: [],
-                    ),
-                  ),
-                ],
+Expanded(child: SizedBox(height: 666,))
+                  ],
+                ),
               ),
             ),
           ),

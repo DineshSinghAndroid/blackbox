@@ -20,7 +20,7 @@ class MyRouter {
     GetPage(name: MyRouter.splashScreen, page: () => SplashScreen()),
     GetPage(name: MyRouter.loginScreen, page: () => LoginScreen()),
     GetPage(name: MyRouter.signupScreen, page: () =>  SignupScreen()),
-    GetPage(name: MyRouter.verifyOtp, page: () =>   VerifyOTPScreen()),
+    // GetPage(name: MyRouter.verifyOtp, page: () =>   VerifyOTPScreen()),
     GetPage(name: MyRouter.barcodeScreen, page: () =>   BarcodeScanner()),
     GetPage(name: MyRouter.barcodelist, page: () =>   ListedBarcodes()),
   ];

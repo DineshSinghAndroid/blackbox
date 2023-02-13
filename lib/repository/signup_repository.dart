@@ -6,7 +6,7 @@ import 'dart:io';
 import '../Model/ModelRegistration.dart';
 import '../Utils/Helper.dart';
 
-Future<ModelRegister> signupRepo({name, phone , email, password ,context}) async {
+Future<ModelRegister> signupRepo({name, phone , email, password ,username,context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
 
@@ -17,7 +17,7 @@ Future<ModelRegister> signupRepo({name, phone , email, password ,context}) async
     map['name'] = name;
     map['phone'] = phone;
     map['email'] = email;
-    map['username'] = phone;
+    map['username'] = username;
     map['password'] = password;
     print(map);
 

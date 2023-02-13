@@ -16,13 +16,22 @@ import '../../router/MyRouter.dart';
 import '../ui/Home/home_barcode_scanner.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
+  String  passwords;
+
+   String usernames;
+
+
+
+
+  // VerifyOTPScreen() ;
+  VerifyOTPScreen({required this.usernames,required this.passwords}) ;
   @override
   _VerifyOTPScreenState createState() => _VerifyOTPScreenState();
 }
 
 class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   String otp = '';
-  String username = '';
+  String username ='';
   String password = '';
 
   void initState() {
@@ -31,12 +40,17 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
 
   init() async {
     await SharedPreferences.getInstance().then((value) {
-      setState(() {
-        username = value.getString(WebConstants.USERNAME).toString();
-        password = value.getString(WebConstants.PASSWORD).toString();
-        print("USer name and password on otp screen is  ${username}" +
-            password.toString());
-      });
+      // setState(() {
+      //   username = value.getString(WebConstants.USERNAME).toString();
+      //   password = value.getString(WebConstants.PASSWORD).toString();
+      //   print("USer name and password on otp screen is  ${username}" +
+      //       password.toString());
+      // });
+    });
+    setState(() {
+      username = widget.usernames;
+      password = widget.passwords;
+      print("USERNAME AND PASSWORD COMING FROM SIGN IS " +username.toString() + password.toString());
     });
   }
 
@@ -136,8 +150,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                       Fluttertoast.showToast(msg: 'Otp is not matched');
                     } else if (otpController.text == otp) {
                       verifyOtp(
-                        username: username,
-                        password: password,
+                        username: widget.usernames,
+                        password: widget.passwords,
                         otp: otpController.text,
                         context: context,
                       ).then((value) async {

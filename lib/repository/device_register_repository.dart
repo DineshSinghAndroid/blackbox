@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import '../Model/ModelDeviceRegster.dart';
@@ -12,12 +13,12 @@ Future<ModelDeviceRegister> deviceRegister(
 
   try {
     var auth =
-        'https://bbxlite.azurewebsites.net/api/registerBeacons?code=jqNS8VB3PxumeGynmdlA1jYWZrvywXklb2FQz06uzGPAzFuq3jRPA==';
+        'https://bbxlite.azurewebsites.net/api/registerBeacons?code=jq-NS8VB3PxumeGynmdlA1jYWZrvywXklb2FQz06uzGPAzFuq3jRPA==';
 
     var map = <String, dynamic>{};
     map['username'] = phone;
     map['password'] = password;
-    map['qrcode'] = "00:8C:10:30:00:43|12";
+    map['qrcode'] = qrcode;
     // map['qrcode'] = qrcode;
     map['asset_name'] = assetsName;
     print("This is map ::::::::::::::::::>>>>>" + map.toString());
@@ -33,10 +34,17 @@ Future<ModelDeviceRegister> deviceRegister(
     print(response.statusCode.toString());
 
     if (response.statusCode == 200) {
+      String mess = json.decode(response.body)["message"].toString();
+
+      Fluttertoast.showToast(msg: mess.toString());
       Helpers.hideLoader(loader);
       print('SERVER RESPONSE::${response.statusCode}');
       return ModelDeviceRegister.fromJson(jsonDecode(response.body));
     } else {
+
+      String mess = json.decode(response.body)["message"].toString();
+
+      Fluttertoast.showToast(msg: mess.toString());
       Helpers.hideLoader(loader);
       print('SEREVER RESPONSE::${response.body}');
       return ModelDeviceRegister.fromJson(jsonDecode(response.body));

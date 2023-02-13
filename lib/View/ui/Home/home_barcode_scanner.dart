@@ -261,6 +261,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                   setState(() {});
 
                   if (_scanBarcode != '-1' && deviceNameController.text != '') {
+                    // Fluttertoast.showToast(msg: "Device added sucessfull");
                     deviceRegister(
                       phone: username,
                       password: password,
@@ -277,7 +278,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                     studentsdata.add(Student(
                         macID: _scanBarcode,
                         name: deviceNameController.text.toString()));
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
                     deviceNameController.clear();
                   } else if (_scanBarcode == '-1') {
                     Fluttertoast.showToast(msg: "Please Scan Again");
