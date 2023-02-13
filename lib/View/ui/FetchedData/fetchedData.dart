@@ -1,14 +1,10 @@
-// Copyright 2017, Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'dart:async';
 import 'dart:math';
 
 import 'package:blackbox/View/ui/FetchedData/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
- 
+
 void main() {
   runApp(FlutterBlueApp());
 }
@@ -52,7 +48,6 @@ class BluetoothOffScreen extends StatelessWidget {
             ),
             Text(
               'Bluetooth Adapter is ${state != null ? state.toString().substring(15) : 'not available'}.',
-             
             ),
           ],
         ),
@@ -66,7 +61,7 @@ class FindDevicesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find Devices'),
+        title: const Text('Find Devices'),
       ),
       body: RefreshIndicator(
         onRefresh: () =>
@@ -78,49 +73,54 @@ class FindDevicesScreen extends StatelessWidget {
                 stream: Stream.periodic(Duration(seconds: 2))
                     .asyncMap((_) => FlutterBlue.instance.connectedDevices),
                 initialData: [],
-                builder: (c, snapshot) => Column(
-                  children: snapshot.data!
-                      .map((d) => ListTile(
-                    title: Text(d.name),
-                    subtitle: Text(d.id.toString()),
-                    trailing: StreamBuilder<BluetoothDeviceState>(
-                      stream: d.state,
-                      initialData: BluetoothDeviceState.disconnected,
-                      builder: (c, snapshot) {
-                        if (snapshot.data ==
-                            BluetoothDeviceState.connected) {
-                          return MaterialButton(
-                            child: Text('OPEN'),
-                            onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DeviceScreen(device: d))),
-                          );
-                        }
-                        return Text(snapshot.data.toString());
-                      },
-                    ),
-                  ))
-                      .toList(),
-                ),
+                builder: (c, snapshot) => snapshot.data != null
+                    ? Column(
+                        children: snapshot.data!
+                            .map((d) => ListTile(
+                                  title: Text(d.name),
+                                  subtitle: Text(d.id.toString()),
+                                  trailing: StreamBuilder<BluetoothDeviceState>(
+                                    stream: d.state,
+                                    initialData:
+                                        BluetoothDeviceState.disconnected,
+                                    builder: (c, snapshot) {
+                                      if (snapshot.data ==
+                                          BluetoothDeviceState.connected) {
+                                        return MaterialButton(
+                                          child: Text('OPEN'),
+                                          onPressed: () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DeviceScreen(device: d))),
+                                        );
+                                      }
+                                      return Text(snapshot.data.toString());
+                                    },
+                                  ),
+                                ))
+                            .toList(),
+                      )
+                    : Text("Hellow"),
               ),
               StreamBuilder<List<ScanResult>>(
                 stream: FlutterBlue.instance.scanResults,
                 initialData: [],
-                builder: (c, snapshot) => Column(
-                  children: snapshot.data!
-                      .map(
-                        (r) => ScanResultTile(
-                      result: r,
-                      onTap: () => Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        r.device.connect();
-                        return DeviceScreen(device: r.device);
-                      })),
-                    ),
-                  )
-                      .toList(),
-                ),
+                builder: (c, snapshot) => snapshot.data != null
+                    ? Column(
+                        children: snapshot.data!
+                            .map(
+                              (r) => ScanResultTile(
+                                result: r,
+                                onTap: () => Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  r.device.connect();
+                                  return DeviceScreen(device: r.device);
+                                })),
+                              ),
+                            )
+                            .toList(),
+                      )
+                    : Text("Hellow 2"),
               ),
             ],
           ),
@@ -167,34 +167,34 @@ class DeviceScreen extends StatelessWidget {
     return services
         .map(
           (s) => ServiceTile(
-        service: s,
-        characteristicTiles: s.characteristics
-            .map(
-              (c) => CharacteristicTile(
-            characteristic: c,
-            onReadPressed: () => c.read(),
-            onWritePressed: () async {
-              await c.write(_getRandomBytes(), withoutResponse: true);
-              await c.read();
-            },
-            onNotificationPressed: () async {
-              await c.setNotifyValue(!c.isNotifying);
-              await c.read();
-            },
-            descriptorTiles: c.descriptors
+            service: s,
+            characteristicTiles: s.characteristics
                 .map(
-                  (d) => DescriptorTile(
-                descriptor: d,
-                onReadPressed: () => d.read(),
-                onWritePressed: () => d.write(_getRandomBytes()),
-              ),
-            )
+                  (c) => CharacteristicTile(
+                    characteristic: c,
+                    onReadPressed: () => c.read(),
+                    onWritePressed: () async {
+                      await c.write(_getRandomBytes(), withoutResponse: true);
+                      await c.read();
+                    },
+                    onNotificationPressed: () async {
+                      await c.setNotifyValue(!c.isNotifying);
+                      await c.read();
+                    },
+                    descriptorTiles: c.descriptors
+                        .map(
+                          (d) => DescriptorTile(
+                            descriptor: d,
+                            onReadPressed: () => d.read(),
+                            onWritePressed: () => d.write(_getRandomBytes()),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                )
                 .toList(),
           ),
         )
-            .toList(),
-      ),
-    )
         .toList();
   }
 
