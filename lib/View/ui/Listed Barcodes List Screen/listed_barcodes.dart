@@ -4,8 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
 
-import 'DeviceDetails/device_details.dart';
-import 'Home/ScannerListConstructor.dart';
+import '../DeviceDetails/device_details.dart';
+import '../FetchedData/fetchData.dart';
+import '../Home/ScannerListConstructor.dart';
 
 class ListedBarcodes extends StatefulWidget {
   const ListedBarcodes({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _ListedBarcodesState extends State<ListedBarcodes> {
     double _w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-          title: Text("Your Devices"),
+          title: const Text("Your Devices"),
           centerTitle: true,
           brightness: Brightness.dark),
       body: AnimationLimiter(
@@ -49,7 +50,7 @@ class _ListedBarcodesState extends State<ListedBarcodes> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DeviceDetailsScreen(),
+                            builder: (context) => FlutterBlueApp(),
                           ));
                     },
                     child: Container(

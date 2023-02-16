@@ -17,7 +17,7 @@ Future<ModelRegister> signupRepo({name, phone , email, password ,username,contex
     map['name'] = name;
     map['phone'] = phone;
     map['email'] = email;
-    map['username'] = username;
+    map['username'] = phone;
     map['password'] = password;
     print(map);
 
@@ -32,11 +32,11 @@ Future<ModelRegister> signupRepo({name, phone , email, password ,username,contex
 
     if (response.statusCode == 200) {
       Helpers.hideLoader(loader);
-      print('SEREVER RESPONSE::' + response.statusCode.toString());
+      print('SERVER RESPONSE::${response.statusCode}');
       return ModelRegister.fromJson(jsonDecode(response.body));
     } else {
       Helpers.hideLoader(loader);
-      print('SEREVER RESPONSE::' + response.body.toString());
+      print('SERVER RESPONSE::${response.body}');
       return ModelRegister.fromJson(jsonDecode(response.body));
     }
   } on SocketException {

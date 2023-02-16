@@ -284,10 +284,10 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                         log(jsonEncode(value));
                                         Fluttertoast.showToast(msg: value.message.toString());
                                         if (value.message == "OTP successfully send to your email.") {
-                                    //       SharedPreferences prefs = await SharedPreferences.getInstance();
-                                    // String   uss =    prefs.setString(WebConstants.USERNAME, phone.text.toString()).toString();
-                                    //   String pss =     prefs.setString(WebConstants.PASSWORD, password.text.toString()).toString();
-                                    //       print("This is setet to shared prefres + "+uss.toString() +pss.toString());
+                                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    String   uss =    prefs.setString(WebConstants.USERNAME, phoneController.text.toString()).toString();
+                                      String pss =     prefs.setString(WebConstants.PASSWORD, passwordController.text.toString()).toString();
+                                          print("This is setet to shared prefres + "+uss.toString() +pss.toString());
                                           // Get.offAllNamed(MyRouter.verifyOtp);
                                           Navigator.push(
                                               context,

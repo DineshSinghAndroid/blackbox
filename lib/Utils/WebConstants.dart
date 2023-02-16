@@ -1,9 +1,10 @@
 class WebConstants {
   static const String IS_USER_LOGGED_IN = "isUserLoggedIn";
-  static const String USERNAME = "userId";
-  static const String PASSWORD = "userId";
+  static const String USERNAME = "username";
+  static const String PASSWORD = "password";
 
   static const String DEVICE_ID = "device_id";
+  static const String BECAN_ADDED = "BECANADDED";
 
 
 

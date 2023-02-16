@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   late Animation<double> _animation;
   TextEditingController AddName = TextEditingController();
 
-  TextEditingController username = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController password = TextEditingController();
 
   @override
@@ -106,14 +106,14 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           ),
                         ),
                         SizedBox(height: Get.height * 0.08),
-                        // component1(Icons.account_circle_outlined, 'Phone Number...', false, false , username),
+                        // component1(Icons.account_circle_outlined, 'Phone Number...', false, false , phoneController),
                         CommonTextFieldWidget(
                           prefix: Icon(
                             Icons.account_circle_outlined,
                             color: Colors.black54.withOpacity(0.4),
                           ),
                           hint: 'Phone Number...',
-                          controller: username,
+                          controller: phoneController,
                           keyboardType: TextInputType.number,
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
@@ -151,16 +151,16 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             () async {
                               if (formKey.currentState!.validate()) {
                                 SharedPreferences prefs = await SharedPreferences.getInstance();
-                                prefs.setString(WebConstants.USERNAME, username.text);
+                                prefs.setString(WebConstants.USERNAME, phoneController.text);
                                 prefs.setString(WebConstants.PASSWORD, password.text);
 
-                                print(username.text);
+                                print(phoneController.text);
                                 print("Datan shared prefs ====>>>>" + prefs.getString(WebConstants.USERNAME).toString());
                                 print(password.text);
-                                username.text.isNotEmpty && username.text.length == 10 && password.text.isNotEmpty && password.text.length >= 8
+                                phoneController.text.isNotEmpty && phoneController.text.length == 10 && password.text.isNotEmpty && password.text.length >= 8
                                     ? {
                                         loginRepo(
-                                          phone: username.text,
+                                          phone: phoneController.text,
                                           password: password.text,
                                           context: context,
                                         ).then((value) async {
