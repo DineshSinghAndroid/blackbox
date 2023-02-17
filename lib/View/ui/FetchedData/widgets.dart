@@ -1,7 +1,6 @@
-// Copyright 2017, Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
+import 'dart:convert' show utf8;
+import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
@@ -11,9 +10,22 @@ class ScanResultTile extends StatelessWidget {
 
   final ScanResult result;
   final VoidCallback? onTap;
+  int fromBytesToInt16(int b1, int b0) {
+    final int8List = Int8List(2)
+      ..[1] = b1
+      ..[0] = b0;
 
+    return ByteData.sublistView(int8List).getInt16(0);
+  }
+
+  void mainin() {
+    var received = [16, 5, 18, 28, 135, 71, 180];
+    var temp = fromBytesToInt16(received[8],received[9]) / 100;
+    print('temperature: $temp');
+  }
   Widget _buildTitle(BuildContext context) {
-    if (result.device.name.length > 0) {
+
+    if (result.device.name.isNotEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,10 +37,11 @@ class ScanResultTile extends StatelessWidget {
           Text(
             result.device.id.toString(),
             style: Theme.of(context).textTheme.caption,
-          )
+          ),
         ],
       );
     } else {
+
       return Text(result.device.id.toString());
     }
   }
@@ -67,13 +80,23 @@ class ScanResultTile extends StatelessWidget {
     if (data.isEmpty) {
       return 'N/A';
     }
+
     List<String> res = [];
     data.forEach((id, bytes) {
       res.add(
           '${id.toRadixString(16).toUpperCase()}: ${getNiceHexArray(bytes)}');
+
     });
+    if(data.isNotEmpty){
+      // final decodeed = utf8.decode();
+
+      print("This is res of get manufecture data " + res.toString());
+
+    }
     return res.join(', ');
+
   }
+
 
   String getNiceServiceData(Map<String, List<int>> data) {
     if (data.isEmpty) {
@@ -88,6 +111,12 @@ class ScanResultTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     print("This is result $result");
+    print("This is manufacturer data  ${result.advertisementData.manufacturerData}");
+    print("This is manufacturer data  ${result.device.id}");
+    print("This is manufacturer data  ${result.advertisementData.serviceUuids}");
+    // final decode = utf8.decode(result.advertisementData.manufacturerData[temp]);
+    // _DataParser(decode);
     return ExpansionTile(
       title: _buildTitle(context),
       leading: Text(result.rssi.toString()),
@@ -135,10 +164,11 @@ class ServiceTile extends StatelessWidget {
           children: <Widget>[
             Text('Service'),
             Text('0x${service.uuid.toString().toUpperCase().substring(4, 8)}',
-                )
+            )
           ],
         ),
-        children: characteristicTiles,
+        children:
+        characteristicTiles,
       );
     } else {
       return ListTile(
@@ -168,25 +198,40 @@ class CharacteristicTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("DATA Characteristic uuid");
+print(characteristic.uuid.toString().substring(4,8));
     return StreamBuilder<List<int>>(
       stream: characteristic.value,
       initialData: characteristic.lastValue,
       builder: (c, snapshot) {
         final value = snapshot.data;
+
+        Uint8List intBytes = Uint8List.fromList(value!.toList());
+        List<double> floatList = intBytes.buffer.asFloat32List();
+
         return ExpansionTile(
           title: ListTile(
             title: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Characteristic'),
-                Text(
-                    '0x${characteristic.uuid.toString().toUpperCase().substring(4, 8)}',
-                     )
+                Text((characteristic.uuid.toString().substring(4,8) == "2a6e")
+                    ? "Temperature" : "Humidity"),
+                (characteristic.uuid.toString().substring(4,8) == "2a6e") ?
+                Image.asset(
+                  'assets/temp.png',
+                  height: 100,
+                  fit: BoxFit.cover,
+                ) :
+                Image.asset(
+                  'assets/hum.png',
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+                Text((floatList.length == 0) ?
+                "Refresh Please" : floatList[0].toStringAsFixed(2)),
               ],
             ),
-            subtitle: Text(value.toString()),
-            contentPadding: EdgeInsets.all(0.0),
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
@@ -241,7 +286,7 @@ class DescriptorTile extends StatelessWidget {
         children: <Widget>[
           Text('Descriptor'),
           Text('0x${descriptor.uuid.toString().toUpperCase().substring(4, 8)}',
-              )
+          )
         ],
       ),
       subtitle: StreamBuilder<List<int>>(
@@ -284,11 +329,20 @@ class AdapterStateTile extends StatelessWidget {
       child: ListTile(
         title: Text(
           'Bluetooth adapter is ${state.toString().substring(15)}',
-         ),
+        ),
         trailing: Icon(
           Icons.error,
-         ),
+        ),
       ),
     );
+  }
+}
+
+_DataParser(String data){
+  if(data.isNotEmpty){
+    var tempValue = data.split(",")[0];
+    var humidity = data.split(",")[1];
+    print("TempValue" + tempValue);
+
   }
 }

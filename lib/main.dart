@@ -1,4 +1,6 @@
 
+import 'dart:typed_data';
+
 import 'package:blackbox/View/ui/FetchedData/fetchData.dart';
 import 'package:blackbox/router/MyRouter.dart';
 import 'package:drift/native.dart';
@@ -7,18 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'DATABASE/db.dart';
 import 'View/ui/Listed Barcodes List Screen/listed_barcodes.dart';
 
-Future <void> main()async {
-  final db = Database(NativeDatabase.memory());
 
-  (await db.select(db.scannerResult).get()).forEach((print));
+void main()  {
+
+
+  // (await db.select(db.scannerResult).get()).forEach((print));
   // await db.into(db.scannerResult).insert(const
   // ScannerResultCompanion(title: 'Singh', description: "Sir"));
    runApp(   const MyApp());
 }
 class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -35,7 +40,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: "/splash",
            getPages: MyRouter.route,
-          // home: ListedBarcodes(),
+            // home: FlutterBlueApp(),
           theme: ThemeData(
               fontFamily: 'Raleway',
               primaryColor: Colors.black,

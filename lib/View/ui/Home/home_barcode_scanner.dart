@@ -170,6 +170,10 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                     ),
                     color: Colors.green.shade400)
               }, onPressed: onPressedIconWithText, state: stateTextWithIcon),
+              // MaterialButton(onPressed: () async {
+              //   var dbquery = await DatabaseHelper.instance.queryDatabase();
+              //   print(dbquery);
+              // },child: Text("print"),)
             ],
           ),
         ),
@@ -228,10 +232,12 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       assetsName: deviceNameController.text,
                       context: context,
                     ).then((value) async {
-                      if (value.message == 'Successfully registered device with your account')  {
+                      if (value.message != 'Successfully registered device with your account') {
                         print(value.message);
-//insert data to database
-                        await DatabaseHelper.instance.insertRecord({DatabaseHelper.columnName: "Baba Devs"});
+                        //insert data to database
+                        await DatabaseHelper.instance.insertRecord(
+                            {DatabaseHelper.deviceName: deviceNameController.text,
+                               });
 
                         studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
                         print(deviceNameController.text.toString());
