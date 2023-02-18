@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 Container CommonButton(String text, OnTap){
   return Container(
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderRadius: BorderRadius.all(Radius.circular(5)),
           color: Colors.black,
     ),
     child: Padding(

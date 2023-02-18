@@ -20,6 +20,7 @@ import '../../Utils/api_call_fram.dart';
 import '../../Utils/connection_validater.dart';
 import '../../repository/login_repository.dart';
 import '../../router/MyRouter.dart';
+import 'forgot_password.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -88,6 +89,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             child: Form(
               key: formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(child: SizedBox()),
                   Expanded(
@@ -96,14 +99,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(),
-                        Padding(
-                          padding: EdgeInsets.only(left: Get.width * 0.30, top: Get.width * 0.05),
-                          child: Container(
-                            height: 70,
-                            width: 150,
-                            decoration: BoxDecoration(color: Colors.black12),
-                            child: Image.asset('assets/images/logo.png'),
-                          ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 50),
+
+                           child: Image.asset('assets/images/bbx.jpeg'),
                         ),
                         SizedBox(height: Get.height * 0.08),
                         // component1(Icons.account_circle_outlined, 'Phone Number...', false, false , phoneController),
@@ -131,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             color: Colors.black54.withOpacity(0.4),
                           ),
                           hint: 'Password',
+                          obscureText: true,
                           controller: password,
                           keyboardType: TextInputType.name,
                           textInputAction: TextInputAction.next,
@@ -173,9 +173,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             },
                           ),
                         ),
-                        // SizedBox(height: 5,),
-                        Padding(
-                          padding: EdgeInsets.only(left: Get.width * 0.07, top: Get.width * 0.05),
+                        SizedBox(height: 15,),
+                        Align(
+
+                          alignment: Alignment.center,
                           child: RichText(
                             text: TextSpan(
                               style: TextStyle(color: Colors.black, fontSize: 14),
@@ -184,9 +185,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                                   text: 'New Consumer? ',
                                   style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
                                 ),
+
                                 TextSpan(
                                     text: 'Click Here to Register',
-                                    style: TextStyle(fontSize: 14, color: Colors.blueAccent, fontWeight: FontWeight.w500
+                                    style: TextStyle(fontSize: 14, color: AppTheme.primaryColorBlue, fontWeight: FontWeight.w500
                                         //decoration: TextDecoration.underline,
                                         ),
                                     recognizer: TapGestureRecognizer()
@@ -197,13 +199,39 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 25.0, top: 8),
-                          child: Text(
-                            'View Device Data',
-                            style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w600),
+                        SizedBox(height: 20,),
+
+                        Align(
+
+                          alignment: Alignment.center,
+                          child: InkWell(
+                            onTap:(){},
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 40,vertical: 10),
+                              decoration: BoxDecoration(
+                                  color: AppTheme.primaryColorBlue,
+                                  borderRadius: BorderRadius.all(Radius.circular(5))
+                              ),
+                              child: Text("View Device Data",style: TextStyle(
+                                  color: Colors.white
+                              ),),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 100,)
+                        ,
+                        Align(
+                          alignment: Alignment.center,
+                          child: InkWell(onTap: (){
+Navigator.push(context,  MaterialPageRoute(builder: (context) => ForgotPasswordScreen(username:phoneController.text.toString()),));
+                          },
+                          child: Text("Forgot Password ?",style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18
+                          ),),
                           ),
                         )
+
                       ],
                     ),
                   ),

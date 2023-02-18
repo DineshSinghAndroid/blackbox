@@ -61,22 +61,12 @@ class CommonTextFieldWidget extends StatelessWidget {
             hintStyle:
             TextStyle(color: Colors.black54, fontSize: 16),
             filled: true,
-            fillColor: Colors.white30.withOpacity(.02),
-            contentPadding: EdgeInsets.symmetric(horizontal: 12)
-                .copyWith(top: maxLines! > 4 ? 18 : 0),
-            focusedBorder: OutlineInputBorder(
-              borderSide:
-              BorderSide(color: Colors.grey.withOpacity(0.5)),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-                borderSide:
-                BorderSide(color: Colors.black54.withOpacity(0.5)),
-                borderRadius: const BorderRadius.all(Radius.circular(10.0))),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.black54.withOpacity(0.5), width: 3.0),
-                borderRadius: BorderRadius.circular(15.0)),
+              fillColor: Colors.grey.withOpacity(0.3),
+            enabledBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            border: InputBorder.none,
             suffixIcon: suffix,
             prefixIcon: prefix),
       ),

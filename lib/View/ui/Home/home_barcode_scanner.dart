@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:blackbox/DATABASE/db.dart';
 import 'package:blackbox/DB/DB_helper.dart';
+import 'package:blackbox/Utils/app_theme.dart';
 import 'package:blackbox/View/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -81,10 +82,9 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
               const SizedBox(
                 height: 40,
               ),
-              Text(
-                "BBX VISIBLE",
-                style: TextStyle(fontSize: 43.sp, fontWeight: FontWeight.w700, color: Colors.black),
-              ),
+              Image.asset('assets/images/bbx.jpeg')
+              ,
+
               SizedBox(
                 height: _height / 3,
               ),
@@ -158,18 +158,35 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
               const SizedBox(
                 height: 70,
               ),
-              ProgressButton.icon(iconedButtons: {
-                ButtonState.idle: IconedButton(text: 'Logout', icon: const Icon(Icons.logout, color: Colors.white), color: Colors.deepPurple.shade500),
-                ButtonState.loading: IconedButton(text: 'Loading', color: Colors.deepPurple.shade700),
-                ButtonState.fail: IconedButton(text: 'Failed', icon: const Icon(Icons.cancel, color: Colors.white), color: Colors.red.shade300),
-                ButtonState.success: IconedButton(
-                    text: 'Success',
-                    icon: const Icon(
-                      Icons.check_circle,
-                      color: Colors.white,
-                    ),
-                    color: Colors.green.shade400)
-              }, onPressed: onPressedIconWithText, state: stateTextWithIcon),
+              // ProgressButton.icon(iconedButtons: {
+              //   ButtonState.idle: IconedButton(text: 'Logout', icon: const Icon(Icons.logout, color: Colors.white), color: Colors.deepPurple.shade500),
+              //   ButtonState.loading: IconedButton(text: 'Loading', color: Colors.deepPurple.shade700),
+              //   ButtonState.fail: IconedButton(text: 'Failed', icon: const Icon(Icons.cancel, color: Colors.white), color: Colors.red.shade300),
+              //   ButtonState.success: IconedButton(
+              //       text: 'Success',
+              //       icon: const Icon(
+              //         Icons.check_circle,
+              //         color: Colors.white,
+              //       ),
+              //       color: Colors.green.shade400)
+              // }, onPressed: onPressedIconWithText, state: stateTextWithIcon),
+              // MaterialButton(onPressed: () async {
+              //   var dbquery = await DatabaseHelper.instance.queryDatabase();
+              //   print(dbquery);
+              // },child: Text("print"),)
+              InkWell(
+                onTap:onPressedIconWithText,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 60,vertical: 15),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColorBlue,
+borderRadius: BorderRadius.all(Radius.circular(5))
+                  ),
+                  child: Text("Logout",style: TextStyle(
+                    color: Colors.white
+                  ),),
+                ),
+              )
             ],
           ),
         ),
@@ -182,97 +199,120 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-          content: const Text("Please Enter Device Details"),
-          actions: [
-            TextFormField(
-                controller: deviceNameController,
-                decoration: (const InputDecoration(
-                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black)),
-                    disabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black)),
-                    errorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black)),
-                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black)),
-                    hintText: "Enter Device Name ",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black))))),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-                readOnly: true,
-                decoration: (InputDecoration(
-                    enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black)),
-                    disabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black)),
-                    errorBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black)),
-                    focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black)),
-                    hintText: _scanBarcode.toString(),
-                    hintStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 16),
-                    border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)), borderSide: BorderSide(color: Colors.black))))),
-            const SizedBox(
-              height: 20,
-            ),
-            Center(
-              child: MaterialButton(
-                color: Colors.blue,
-                child: const Text("ADD"),
-                onPressed: () {
-                  print(barcodeScanRes.toString());
-                  setState(() {});
+        return Container(
+          height: double.minPositive,
+          child: AlertDialog(
 
-                  if (_scanBarcode != '-1' && deviceNameController.text != '') {
-                    // Fluttertoast.showToast(msg: "Device added sucessfull");
-                    deviceRegister(
-                      phone: username,
-                      password: password,
-                      qrcode: _scanBarcode,
-                      assetsName: deviceNameController.text,
-                      context: context,
-                    ).then((value) async {
-                      if (value.message == 'Successfully registered device with your account')  {
-                        print(value.message);
-//insert data to database
-                        await DatabaseHelper.instance.insertRecord({DatabaseHelper.columnName: "Baba Devs"});
-
-                        studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
-                        print(deviceNameController.text.toString());
-                        // Get.back();
-                      }
-                    });
-
-                    Navigator.pop(context);
-                  } else if (_scanBarcode == '-1') {
-                    Fluttertoast.showToast(msg: "Please Scan Again");
-                  } else if (deviceNameController.text == '') {
-                    Fluttertoast.showToast(msg: "Please Enter Device Name");
-                  } else {
-                    Fluttertoast.showToast(msg: "Please Scan Correct Barcode");
-                  }
-                },
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+            content: const Text("Please Enter Device Details",style: TextStyle(
+              color: AppTheme.primaryColorBlue,fontWeight: FontWeight.w500
+            ),),
+            actions: [
+               Align(
+                alignment: Alignment.topLeft,
+                child:Text("Enter Device Name"),
               ),
-            )
-          ],
+          SizedBox(height: 5,)
+              ,
+
+          TextFormField(
+
+                  controller: deviceNameController,
+                  decoration: (
+
+                        InputDecoration(
+                        filled: true,
+                      fillColor: Colors.grey.withOpacity(0.3),
+                      enabledBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                          border: InputBorder.none,
+                      hintText: "Device 001 ",
+                      ))),
+              const SizedBox(
+                height: 10,
+              ),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: const Text("MAC ID")),
+
+              TextFormField(
+                  readOnly: true,
+                  decoration: (InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey.withOpacity(0.3),
+
+
+                      enabledBorder:  InputBorder.none,
+                      disabledBorder:  InputBorder.none,
+                      errorBorder:  InputBorder.none,
+                      focusedBorder:  InputBorder.none,
+                      hintText: _scanBarcode.toString(),
+                      hintStyle:  TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 16),
+                      border:  InputBorder.none))),
+              const SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: MaterialButton(
+                  color: AppTheme.primaryColorBlue,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text("Add Details",style: TextStyle(color: Colors.white),),
+                  ),
+                  onPressed: () {
+                    print(barcodeScanRes.toString());
+                    setState(() {});
+
+                    if (_scanBarcode != '-1' && deviceNameController.text != '') {
+                      // Fluttertoast.showToast(msg: "Device added sucessfull");
+                      deviceRegister(
+                        phone: username,
+                        password: password,
+                        qrcode: _scanBarcode,
+                        assetsName: deviceNameController.text,
+                        context: context,
+                      ).then((value) async {
+                        if (value.message != 'Successfully registered device with your account') {
+                          print(value.message);
+                          //insert data to database
+                          await DatabaseHelper.instance.insertRecord(
+                              {DatabaseHelper.deviceName: deviceNameController.text,
+                                 });
+
+                          studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
+                          print(deviceNameController.text.toString());
+                          // Get.back();
+                        }
+                      });
+
+                      Navigator.pop(context);
+                    } else if (_scanBarcode == '-1') {
+                      Fluttertoast.showToast(msg: "Please Scan Again");
+                    } else if (deviceNameController.text == '') {
+                      Fluttertoast.showToast(msg: "Please Enter Device Name");
+                    } else {
+                      Fluttertoast.showToast(msg: "Please Scan Correct Barcode");
+                    }
+                  },
+                ),
+              )
+            ],
+          ),
         );
       },
     );
   }
 
-  void onPressedIconWithText() {
-    setState(() {
-      ButtonState.loading;
-      stateTextWithIcon = ButtonState.loading;
-    });
+  Future<void> onPressedIconWithText() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    Future.delayed(const Duration(seconds: 3)).then((value) async {
-      setState(() {
-        ButtonState.success;
-        stateTextWithIcon = ButtonState.success;
-      });
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(WebConstants.USERNAME);
+    prefs.remove(WebConstants.PASSWORD);
+    prefs.setBool(WebConstants.IS_USER_LOGGED_IN, false);
 
-      prefs.remove(WebConstants.USERNAME);
-      prefs.remove(WebConstants.PASSWORD);
-      prefs.setBool(WebConstants.IS_USER_LOGGED_IN, false);
-    });
+
     Navigator.push(
         context,
         MaterialPageRoute(

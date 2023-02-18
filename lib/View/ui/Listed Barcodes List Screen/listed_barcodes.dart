@@ -7,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import '../DeviceDetails/device_details.dart';
 import '../FetchedData/fetchData.dart';
 import '../Home/ScannerListConstructor.dart';
+import '../ShowBecoanData/showBecoanData.dart';
 
 class ListedBarcodes extends StatefulWidget {
   const ListedBarcodes({Key? key}) : super(key: key);
@@ -50,7 +51,7 @@ class _ListedBarcodesState extends State<ListedBarcodes> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => FlutterBlueApp(),
+                            builder: (context) => ShowBeconDataScreen(),
                           ));
                     },
                     child: Container(
