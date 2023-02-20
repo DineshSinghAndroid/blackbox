@@ -25,11 +25,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(padding: EdgeInsets.symmetric(horizontal: 50, vertical: 100), child: Image.asset('assets/images/bbx.jpeg')),
-            CommonTextFieldWidget(
+            Padding(padding: const
+            EdgeInsets.symmetric(horizontal: 50, vertical: 100),
+                child: Image.asset('assets/images/bbx.jpeg')),
+            const CommonTextFieldWidget(
               hint: "Email",
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Align(
@@ -46,9 +48,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 100,)
+            const SizedBox(height: 100,)
             ,
-            Text("We will Send a password reset mail ")
+            const Text("We will Send a password reset mail ")
 
           ],
         ),
