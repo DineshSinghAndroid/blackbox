@@ -137,7 +137,6 @@ class _ListedBarcodesState extends State<ListedBarcodes> {
                               ),
                             ],
                           ),
-
                           CommonButton(
                             "Update",
                                 () async {
@@ -149,7 +148,7 @@ class _ListedBarcodesState extends State<ListedBarcodes> {
                                       Fluttertoast.showToast(
                                           msg: value.message.toString());
                                       Get.toNamed('');
-                                    });
+                                });
                             },
                           ),
                         ],

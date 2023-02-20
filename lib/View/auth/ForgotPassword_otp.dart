@@ -59,7 +59,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   SizedBox(
                     height: 15,
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.center,
                     child: Text(
                        'Enter Verification Code',
@@ -130,9 +130,9 @@ class _VerifyOtpState extends State<VerifyOtp> {
                       Fluttertoast.showToast(msg: "otp is not matched ");
                     } else if (otpController.text == otp) {
                       verifyForgotEmail(
-                          email,
+                          email.toString(),
                           newPassword.text.toString(),
-                          otp,
+                          otp.toString(),
                         context)
                           .then((value) {
                         Fluttertoast.showToast(msg: value.message.toString());
