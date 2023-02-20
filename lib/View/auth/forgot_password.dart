@@ -1,7 +1,12 @@
 import 'package:blackbox/Utils/Common_textfield.dart';
+import 'package:blackbox/router/MyRouter.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 
 import '../../Utils/app_theme.dart';
+import '../../Utils/button.dart';
+import '../../repository/forgot_password_repo.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   String username;
@@ -19,6 +24,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.initState();
   }
 
+  TextEditingController username = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,29 +35,38 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             Padding(padding: const
             EdgeInsets.symmetric(horizontal: 50, vertical: 100),
                 child: Image.asset('assets/images/bbx.jpeg')),
-            const CommonTextFieldWidget(
-              hint: "Email",
+             CommonTextFieldWidget(
+              hint: "Phone",
+              controller: username,
             ),
             const SizedBox(
               height: 50,
             ),
             Align(
               alignment: Alignment.center,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                  decoration: BoxDecoration(color: AppTheme.primaryColorBlue, borderRadius: BorderRadius.all(Radius.circular(5))),
-                  child: Text(
-                    "Submit",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+              child: CommonButton(
+                "Submit",
+                    () async {
+                      forgotEmail(
+                         username.text.toString(),
+                         context,
+                      ).then((value) async {
+                       if(value.message == "OTP successfully send."){
+                         Fluttertoast.showToast(msg: value.message.toString());
+                         Get.toNamed(MyRouter.verifyOtp , arguments: ([username.text,
+                           value.otp.toString()
+                         ]));
+                       }
+                       else{
+                         Fluttertoast.showToast(msg: 'Something went wrong');
+                       }
+                      });
+
+                },
               ),
             ),
-            const SizedBox(height: 100,)
-            ,
-            const Text("We will Send a password reset mail ")
+            const SizedBox(height: 100,),
+            const Text("We will Send a password reset phone number ")
 
           ],
         ),

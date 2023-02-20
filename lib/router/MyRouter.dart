@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../View/auth/ForgotPassword_otp.dart';
 import '../View/auth/login_screen.dart';
 import '../View/auth/signup_screen.dart';
 import '../View/auth/splash_screen.dart';
@@ -10,9 +11,10 @@ class MyRouter {
   static var splashScreen = "/splashScreen";
   static var loginScreen = "/loginScreen";
   static var signupScreen = "/signupScreen";
-  static var verifyOtp = "/verifyOtp";
+  // static var verifyOtp = "/verifyOtp";
   static var barcodeScreen = "/barcodeScreen";
   static var barcodelist = "/barcodelist";
+  static var verifyOtp = "/verifyOtp";
 
 
   static var route = [
@@ -23,5 +25,6 @@ class MyRouter {
     // GetPage(name: MyRouter.verifyOtp, page: () =>   VerifyOTPScreen()),
     GetPage(name: MyRouter.barcodeScreen, page: () =>   BarcodeScanner()),
     GetPage(name: MyRouter.barcodelist, page: () =>   ListedBarcodes()),
+    GetPage(name: MyRouter.verifyOtp, page: () =>   VerifyOtp()),
   ];
 }

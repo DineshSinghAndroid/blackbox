@@ -27,7 +27,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   TextEditingController AddName = TextEditingController();
@@ -101,8 +102,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         SizedBox(),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 50),
-
-                           child: Image.asset('assets/images/bbx.jpeg'),
+                          child: Image.asset('assets/images/bbx.jpeg'),
                         ),
                         SizedBox(height: Get.height * 0.08),
                         // component1(Icons.account_circle_outlined, 'Phone Number...', false, false , phoneController),
@@ -117,7 +117,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Please Enter Phone Number'),
+                            RequiredValidator(
+                                errorText: 'Please Enter Phone Number'),
                             MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
                         ),
@@ -136,7 +137,8 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Please Enter Password'),
+                            RequiredValidator(
+                                errorText: 'Please Enter Password'),
                             //MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
                         ),
@@ -150,45 +152,66 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             "Login",
                             () async {
                               if (formKey.currentState!.validate()) {
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                prefs.setString(WebConstants.USERNAME, phoneController.text);
-                                prefs.setString(WebConstants.PASSWORD, password.text);
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                prefs.setString(WebConstants.USERNAME,
+                                    phoneController.text);
+                                prefs.setString(
+                                    WebConstants.PASSWORD, password.text);
 
                                 print(phoneController.text);
-                                print("Datan shared prefs ====>>>>" + prefs.getString(WebConstants.USERNAME).toString());
+                                print("Datan shared prefs ====>>>>" +
+                                    prefs
+                                        .getString(WebConstants.USERNAME)
+                                        .toString());
                                 print(password.text);
-                                phoneController.text.isNotEmpty && phoneController.text.length == 10 && password.text.isNotEmpty && password.text.length >= 8
+                                phoneController.text.isNotEmpty &&
+                                        phoneController.text.length == 10 &&
+                                        password.text.isNotEmpty &&
+                                        password.text.length >= 8
                                     ? {
                                         loginRepo(
                                           phone: phoneController.text,
                                           password: password.text,
                                           context: context,
                                         ).then((value) async {
-                                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                                          prefs.setBool(WebConstants.IS_USER_LOGGED_IN, true);
+                                          SharedPreferences prefs =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          prefs.setBool(
+                                              WebConstants.IS_USER_LOGGED_IN,
+                                              true);
                                         })
                                       }
-                                    : Fluttertoast.showToast(msg: "Incorrect Username or Password");
+                                    : Fluttertoast.showToast(
+                                        msg: "Incorrect Username or Password");
                               }
                             },
                           ),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Align(
-
                           alignment: Alignment.center,
                           child: RichText(
                             text: TextSpan(
-                              style: TextStyle(color: Colors.black, fontSize: 14),
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 14),
                               children: [
                                 TextSpan(
                                   text: 'New Consumer? ',
-                                  style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
                                 ),
-
                                 TextSpan(
                                     text: 'Click Here to Register',
-                                    style: TextStyle(fontSize: 14, color: AppTheme.primaryColorBlue, fontWeight: FontWeight.w500
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppTheme.primaryColorBlue,
+                                        fontWeight: FontWeight.w500
                                         //decoration: TextDecoration.underline,
                                         ),
                                     recognizer: TapGestureRecognizer()
@@ -199,39 +222,50 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             ),
                           ),
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
 
                         Align(
-
                           alignment: Alignment.center,
                           child: InkWell(
-                            onTap:(){},
+                            onTap: () {},
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 40,vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 10),
                               decoration: BoxDecoration(
                                   color: AppTheme.primaryColorBlue,
-                                  borderRadius: BorderRadius.all(Radius.circular(5))
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
+                              child: Text(
+                                "View Device Data",
+                                style: TextStyle(color: Colors.white),
                               ),
-                              child: Text("View Device Data",style: TextStyle(
-                                  color: Colors.white
-                              ),),
                             ),
                           ),
                         ),
-                        SizedBox(height: 100,)
-                        ,
+                        SizedBox(
+                          height: 100,
+                        ),
                         Align(
                           alignment: Alignment.center,
-                          child: InkWell(onTap: (){
-Navigator.push(context,  MaterialPageRoute(builder: (context) => ForgotPasswordScreen(username:phoneController.text.toString()),));
-                          },
-                          child: Text("Forgot Password ?",style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 18
-                          ),),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ForgotPasswordScreen(
+                                        username:
+                                            phoneController.text.toString()),
+                                  ));
+                            },
+                            child: Text(
+                              "Forgot Password ?",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 18),
+                            ),
                           ),
                         )
-
                       ],
                     ),
                   ),
@@ -244,7 +278,8 @@ Navigator.push(context,  MaterialPageRoute(builder: (context) => ForgotPasswordS
     );
   }
 
-  Widget component1(IconData icon, String hintText, bool isPassword, bool isEmail, Controller) {
+  Widget component1(IconData icon, String hintText, bool isPassword,
+      bool isEmail, Controller) {
     double _width = MediaQuery.of(context).size.width;
     return Container(
       height: _width / 8,

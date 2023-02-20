@@ -8,6 +8,9 @@ class AppTheme {
   static const Color BackgroundWhite = Colors.white;
   static const Color orange = Color(0xffff5722);
   static const Color black = Color(0xff000000);
+  static const Color main = Color(0xff010b54);
+  static const Color viewdata = Color(0xff2652d5);
+  static const Color qrcode = Color(0xff2652d5);
 
 
 }

@@ -82,76 +82,96 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
               const SizedBox(
                 height: 40,
               ),
-              Image.asset('assets/images/bbx.jpeg')
-              ,
-
+              Image.asset('assets/images/bbx.jpeg'),
               SizedBox(
                 height: _height / 3,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    height: 150.h,
-                    width: 130.w,
-                    decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: Colors.blue),
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: () => scanQR().then((value) {
-                            if (_scanBarcode != '-1') {
-                              AddBarcodeName(context);
-                            } else {
-                              Fluttertoast.showToast(msg: "Please Scan Correct Barcode");
-                            }
-                          }),
-                          child: Container(
-                              height: 100.h,
-                              // width: 100,
-                              child: Lottie.network('https://assets7.lottiefiles.com/packages/lf20_2sapbqfh.json')),
+                  Column(
+                    children: [
+                      Container(
+                        height: 120.h,
+                        width: 130.w,
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: AppTheme.viewdata),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () => scanQR().then((value) {
+                                if (_scanBarcode != '-1') {
+                                  AddBarcodeName(context);
+                                } else {
+                                  Fluttertoast.showToast(msg: "Please Scan Correct Barcode");
+                                }
+                              }),
+                              child: Container(
+                                  height: 100.h,
+                                  // width: 100,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 20),
+                                    child: Image.asset('assets/images/viewdata.jpg'),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        const Text(
-                          "Device Add \n& Naming",
-                          style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
-                        ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                      ],
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ListedBarcodes(),
-                          ));
-                    },
-                    child: Container(
-                      height: 150.h,
-                      width: 130.w,
-                      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: Colors.blue),
-                      child: Column(
-                        children: [
-                          Container(
-                              height: 100.h,
-                              // width: 100,
-                              child: Lottie.network('https://assets9.lottiefiles.com/packages/lf20_49rdyysj.json')),
-                          const Spacer(),
-                          const Text(
-                            "View Data",
-                            style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                        ],
                       ),
-                    ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      const Text(
+                        "Device Add & Naming",
+                        style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ListedBarcodes(),
+                              ));
+                        },
+                        child: Container(
+                          height: 120.h,
+                          width: 130.w,
+                          decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: AppTheme.viewdata),
+                          child: Column(
+                            children: [
+                              Container(
+                                  height: 100.h,
+                                  // width: 100,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 20),
+                                    child: Image.asset('assets/images/qrCode.jpg'),
+                                  )),
+                              const Spacer(),
+                              SizedBox(
+                                height: 15.h,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      const Text(
+                        "View Data",
+                        style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
+                      ),
+                    ],
                   ),
                 ],
               ),

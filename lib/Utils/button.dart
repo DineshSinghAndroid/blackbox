@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'app_theme.dart';
+
 Container CommonButton(String text, OnTap){
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(5)),
-          color: Colors.black,
+          color:  AppTheme.main,
     ),
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 30),

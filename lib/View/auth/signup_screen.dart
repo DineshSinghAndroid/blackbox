@@ -159,19 +159,36 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                           height: 20,
                         ),
                         //component1(Icons.email_outlined, 'Email', false, true, email, TextInputType.emailAddress),
+                        // CommonTextFieldWidget(
+                        //   prefix: Icon(
+                        //     Icons.lock_outline,
+                        //     color: Colors.black54.withOpacity(0.4),
+                        //   ),
+                        //   hint: 'Password',
+                        //   controller: passwordController,
+                        //   keyboardType: TextInputType.none,
+                        //   textInputAction: TextInputAction.next,
+                        //   bgColor: Colors.black54.withOpacity(0.4),
+                        //   validator: MultiValidator([
+                        //     RequiredValidator(errorText: 'Please enter password'),
+                        //     MinLengthValidator(8, errorText: 'Password should be 8 characters long'),
+                        //   ]),
+                        // ),
                         CommonTextFieldWidget(
                           prefix: Icon(
                             Icons.lock_outline,
                             color: Colors.black54.withOpacity(0.4),
                           ),
                           hint: 'Password',
+                          obscureText: true,
                           controller: passwordController,
-                          keyboardType: TextInputType.visiblePassword,
+                          keyboardType: TextInputType.name,
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Please enter password'),
-                            MinLengthValidator(8, errorText: 'Password should be 8 characters long'),
+                            RequiredValidator(
+                                errorText: 'Please Enter Password'),
+                            //MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
                         ),
                         SizedBox(

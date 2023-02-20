@@ -45,15 +45,9 @@ class _SplashScreenState extends State<SplashScreen> {
           decoration: const BoxDecoration(color: Colors.white),
         ),
         Positioned(
-          top: screenSize.width * 0.75,
-          left: screenSize.width * 0.22,
-          child: Container(
-            margin: const EdgeInsets.only(top: 20),
-            height: screenSize.width * 0.40,
-            width: screenSize.width * 0.55,
-            decoration: const BoxDecoration(color: Colors.black12),
-            child: Image.asset("assets/images/logo.png"),
-          ),
+          top: screenSize.width * 0.95,
+          left: screenSize.width * 0.04,
+          child: Image.asset("assets/images/bbx.jpeg"),
         ),
       ],
     ));
