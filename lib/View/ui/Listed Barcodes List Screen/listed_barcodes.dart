@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../Utils/button.dart';
+import '../../../repository/update_assetname_repo.dart';
 import '../DeviceDetails/device_details.dart';
 import '../FetchedData/fetchData.dart';
 import '../Home/ScannerListConstructor.dart';
@@ -132,6 +136,21 @@ class _ListedBarcodesState extends State<ListedBarcodes> {
                                 ],
                               ),
                             ],
+                          ),
+
+                          CommonButton(
+                            "Update",
+                                () async {
+                                    updateAssets(
+                                        studentsdata[i].macID.toString(),
+                                        studentsdata[i].name.toString(),
+                                      context,
+                                    ).then((value) async {
+                                      Fluttertoast.showToast(
+                                          msg: value.message.toString());
+                                      Get.toNamed('');
+                                    });
+                            },
                           ),
                         ],
                       ),
