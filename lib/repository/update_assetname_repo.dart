@@ -5,7 +5,7 @@ import 'package:blackbox/Utils/Helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
-Future<ModelCommonResponse> updateAssets(qrcode, asset_name ,BuildContext context) async {
+Future<ModelCommonResponse> updateAssets(    {required String qrCode,required String asset_name,context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   try {
@@ -13,7 +13,7 @@ Future<ModelCommonResponse> updateAssets(qrcode, asset_name ,BuildContext contex
     var auth =  "https://bbxlite.azurewebsites.net/api/updateBeaconName?code=HRrPrQIuiFjFxWF4VhAM5SlcDplTnw1lJpNEds28bSMXAzFuG7-u5g==";
 
     var map = <String, dynamic>{};
-    map['qrcode'] = qrcode;
+    map['qrcode'] = qrCode;
     map['asset_name'] = asset_name;
     final headers = {
       HttpHeaders.contentTypeHeader: 'application/json',

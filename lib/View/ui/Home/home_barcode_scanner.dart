@@ -18,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../Utils/WebConstants.dart';
 import '../../../repository/device_register_repository.dart';
+import '../../../repository/update_assetname_repo.dart';
 import '../../../router/MyRouter.dart';
 import '../Listed Barcodes List Screen/listed_barcodes.dart';
 import 'ScannerListConstructor.dart';
@@ -39,14 +40,12 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
   bool becanAdded = false;
 
   void initState() {
-    setState(() {
-      ButtonState.idle;
-      stateTextWithIcon = ButtonState.idle;
-    });
     init();
   }
 
-  void dispose() {}
+  // void dispose() {
+  //   deviceNameController.dispose();
+  // }
   String _scanBarcode = 'Unknown';
 
   TextEditingController deviceNameController = TextEditingController();
@@ -55,8 +54,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.QR);
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
@@ -70,7 +68,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
 
   @override
   Widget build(BuildContext context) {
-    log(studentsdata.length.toString());
+    // log(studentsdata.length.toString());
 
     double _height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -95,9 +93,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       Container(
                         height: 120.h,
                         width: 130.w,
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color: AppTheme.viewdata),
+                        decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: AppTheme.viewdata),
                         child: Column(
                           children: [
                             InkWell(
@@ -105,8 +101,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                                 if (_scanBarcode != '-1') {
                                   AddBarcodeName(context);
                                 } else {
-                                  Fluttertoast.showToast(
-                                      msg: "Please Scan Correct Barcode");
+                                  Fluttertoast.showToast(msg: "Please Scan Correct Barcode");
                                 }
                               }),
                               child: Container(
@@ -114,8 +109,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                                   // width: 100,
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 20),
-                                    child: Image.asset(
-                                        'assets/images/viewdata.jpg'),
+                                    child: Image.asset('assets/images/viewdata.jpg'),
                                   )),
                             ),
                             SizedBox(
@@ -132,10 +126,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       ),
                       const Text(
                         "Device Add & Naming",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500),
+                        style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -152,10 +143,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                         child: Container(
                           height: 120.h,
                           width: 130.w,
-                          decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                              color: AppTheme.viewdata),
+                          decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: AppTheme.viewdata),
                           child: Column(
                             children: [
                               Container(
@@ -163,8 +151,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                                   // width: 100,
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 20),
-                                    child:
-                                        Image.asset('assets/images/qrCode.jpg'),
+                                    child: Image.asset('assets/images/qrCode.jpg'),
                                   )),
                               const Spacer(),
                               SizedBox(
@@ -179,10 +166,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       ),
                       const Text(
                         "View Data",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500),
+                        style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
@@ -210,11 +194,9 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
               InkWell(
                 onTap: onPressedIconWithText,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
-                  decoration: BoxDecoration(
-                      color: AppTheme.primaryColorBlue,
-                      borderRadius: BorderRadius.all(Radius.circular(5))),
-                  child: Text(
+                  padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+                  decoration: const BoxDecoration(color: AppTheme.primaryColorBlue, borderRadius: BorderRadius.all(Radius.circular(5))),
+                  child: const Text(
                     "Logout",
                     style: TextStyle(color: Colors.white),
                   ),
@@ -235,27 +217,26 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
         return Container(
           height: double.minPositive,
           child: AlertDialog(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            content: const Text(
-              "Please Enter Device Details",
-              style: TextStyle(
-                  color: AppTheme.viewdata,
-                  fontWeight: FontWeight.w500),
-            ),
-
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
             actions: [
-              Divider(
-                thickness: 1.5,
-                indent: 20,
-                endIndent: 30,
-                color: Colors.grey.withOpacity(.5),
+              const Center(
+                child: Text(
+                  "Please Enter Device Details",
+                  style: TextStyle(color: AppTheme.viewdata, fontSize: 18, fontWeight: FontWeight.w500),
+                ),
               ),
-              Align(
+              const SizedBox(
+                height: 15,
+              ),
+              const Divider(
+                height: 1.0,
+                color: Colors.grey,
+              ),
+              const Align(
                 alignment: Alignment.topLeft,
                 child: Text("Enter Device Name"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               TextFormField(
@@ -273,7 +254,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
               const SizedBox(
                 height: 10,
               ),
-              Align(alignment: Alignment.topLeft, child: const Text("MAC ID")),
+              const Align(alignment: Alignment.topLeft, child: Text("MAC ID")),
               TextFormField(
                   readOnly: true,
                   decoration: (InputDecoration(
@@ -284,10 +265,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       errorBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       hintText: _scanBarcode.toString(),
-                      hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                      hintStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 16),
                       border: InputBorder.none))),
               const SizedBox(
                 height: 20,
@@ -305,9 +283,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                   onPressed: () {
                     print(barcodeScanRes.toString());
                     setState(() {});
-                    if (_scanBarcode != '-1' &&
-                        deviceNameController.text != '') {
-                      // Fluttertoast.showToast(msg: "Device added sucessfull");
+                    if (_scanBarcode != '-1' && deviceNameController.text != '') {
                       deviceRegister(
                         phone: username,
                         password: password,
@@ -315,31 +291,128 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                         assetsName: deviceNameController.text,
                         context: context,
                       ).then((value) async {
-                        if (value.message !=
-                            'Successfully registered device with your account') {
+                        if (value.message == 'Successfully registered device with your account') {
                           print(value.message);
                           //insert data to database
-                          await DatabaseHelper.instance.insertRecord({
-                            DatabaseHelper.deviceName:
-                                deviceNameController.text,
-                          });
+                          // await DatabaseHelper.instance.insertRecord({
+                          //   DatabaseHelper.deviceName: deviceNameController.text,
+                          // });
 
-                          studentsdata.add(Student(
-                              macID: _scanBarcode,
-                              name: deviceNameController.text));
+                          studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
                           print(deviceNameController.text.toString());
                           // Get.back();
+                          Navigator.pop(context);
+                          // Navigator.pop(context);
+                        } else if (value.message == "Beacon already registered.") {
+                          return showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return SizedBox(
+                                height: double.minPositive,
+                                child: AlertDialog(
+                                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                                  actions: [
+                                    const Center(
+                                      child: Text(
+                                        "Rename Device",
+                                        style: TextStyle(color: AppTheme.viewdata, fontSize: 18, fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    const Divider(
+                                      height: 1.0,
+                                      color: Colors.grey,
+                                    ),
+                                    const Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text("Enter Device Name"),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    TextFormField(
+                                        controller: deviceNameController,
+                                        decoration: (InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.grey.withOpacity(0.3),
+                                          enabledBorder: InputBorder.none,
+                                          disabledBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          border: InputBorder.none,
+                                          hintText: "Device 001 ",
+                                        ))),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    const Align(alignment: Alignment.topLeft, child: Text("MAC ID")),
+                                    TextFormField(
+                                        readOnly: true,
+                                        decoration: (InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.grey.withOpacity(0.3),
+                                            enabledBorder: InputBorder.none,
+                                            disabledBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            hintText: _scanBarcode.toString(),
+                                            hintStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 16),
+                                            border: InputBorder.none))),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Center(
+                                      child: MaterialButton(
+                                        color: AppTheme.primaryColorBlue,
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Rename Device",
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          print(barcodeScanRes.toString());
+                                          setState(() {});
+                                          if (_scanBarcode != '-1' && deviceNameController.text != '') {
+                                            updateAssets(qrCode: _scanBarcode.toString(), asset_name: deviceNameController.text.toString(), context: context).then((value) async {
+                                              studentsdata[studentsdata.indexWhere((element) => element.macID == _scanBarcode.toString())] =
+                                                  Student(macID: _scanBarcode, name: deviceNameController.text.toString());
+                                              print(studentsdata.length);
+
+                                              Fluttertoast.showToast(msg: value.message.toString());
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            });
+
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          } else if (_scanBarcode == '-1') {
+                                            Fluttertoast.showToast(msg: "Please Scan Again");
+                                          } else if (deviceNameController.text == '') {
+                                            Fluttertoast.showToast(msg: "Please Enter Device Name");
+                                          } else {
+                                            Fluttertoast.showToast(msg: "Please Scan Correct Barcode");
+                                          }
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         }
                       });
-
-                      Navigator.pop(context);
                     } else if (_scanBarcode == '-1') {
                       Fluttertoast.showToast(msg: "Please Scan Again");
                     } else if (deviceNameController.text == '') {
                       Fluttertoast.showToast(msg: "Please Enter Device Name");
                     } else {
-                      Fluttertoast.showToast(
-                          msg: "Please Scan Correct Barcode");
+                      Fluttertoast.showToast(msg: "Please Scan Correct Barcode");
                     }
                   },
                 ),
@@ -370,9 +443,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     setState(() {
       username = prefs.getString(WebConstants.USERNAME).toString();
       password = prefs.getString(WebConstants.PASSWORD).toString();
-      print("USERNAME AND PASSWORD IS " +
-          username.toString() +
-          password.toString());
+      print("USERNAME AND PASSWORD IS " + username.toString() + password.toString());
     });
   }
 }

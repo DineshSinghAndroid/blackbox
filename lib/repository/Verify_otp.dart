@@ -11,12 +11,13 @@ Future<ModelCommonResponse> verifyForgotEmail(
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context)!.insert(loader);
   try {
-    var auth = "https://bbxlite.azurewebsites.net/api/updatePassword?code=z3FFNg7xxtvkcMTFmsi3qojZmPiAPLOcGYA4mV7AU85iAzFuIUHBKg== ";
+    var auth = "https://bbxlite.azurewebsites.net/api/updatePassword?code=z3FFNg7xxtvkcMTFmsi3qojZmPiAPLOcGYA4mV7AU85iAzFuIUHBKg==";
 
     var map = <String, dynamic>{};
     map['username'] = username;
     map['password'] = password;
     map['otp'] = otp;
+    print("THIS IS MAP $map");
 
     final headers = {
       HttpHeaders.contentTypeHeader: 'application/json',

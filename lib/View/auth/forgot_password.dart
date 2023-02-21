@@ -29,46 +29,45 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(padding: const
-            EdgeInsets.symmetric(horizontal: 50, vertical: 100),
-                child: Image.asset('assets/images/bbx.jpeg')),
-             CommonTextFieldWidget(
-              hint: "Phone",
-              controller: username,
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: CommonButton(
-                "Submit",
-                    () async {
-                      forgotEmail(
-                         username.text.toString(),
-                         context,
-                      ).then((value) async {
-                       if(value.message == "OTP successfully send."){
-                         Fluttertoast.showToast(msg: value.message.toString());
-                         Get.toNamed(MyRouter.verifyOtp , arguments: ([username.text,
-                           value.otp.toString()
-                         ]));
-                       }
-                       else{
-                         Fluttertoast.showToast(msg: 'Something went wrong');
-                       }
-                      });
-
-                },
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 100), child: Image.asset('assets/images/bbx.jpeg')),
+              CommonTextFieldWidget(
+                hint: "Phone",
+                controller: username,
               ),
-            ),
-            const SizedBox(height: 100,),
-            const Text("We will Send a password reset phone number ")
-
-          ],
+              const SizedBox(
+                height: 50,
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: CommonButton(
+                  "Submit",
+                  () async {
+                    if (username.text.length == 10) {
+                      forgotEmail(
+                        username.text.toString(),
+                        context,
+                      ).then((value) async {
+                        if (value.message == "OTP successfully send.") {
+                          Fluttertoast.showToast(msg: value.message.toString());
+                          Get.toNamed(MyRouter.verifyOtp, arguments: ([username.text, value.otp.toString()]));
+                        }
+                      });
+                    } else {
+                      Fluttertoast.showToast(msg: "Please Enter Correct Phone Number");
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              const Text("We will Send a password reset phone number ")
+            ],
+          ),
         ),
       ),
     );

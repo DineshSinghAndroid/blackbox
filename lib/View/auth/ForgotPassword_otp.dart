@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:blackbox/View/auth/login_screen.dart';
 import 'package:blackbox/View/ui/Home/home_barcode_scanner.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -33,6 +34,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
     super.initState();
     email = Get.arguments[0];
     otp = Get.arguments[1];
+    print("EMail and otp coming from previous screen is $email $otp")
+    ;
   }
 
   final formKey = GlobalKey<FormState>();
@@ -136,6 +139,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
                         context)
                           .then((value) {
                         Fluttertoast.showToast(msg: value.message.toString());
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),))
+                        ;
                       });
                     }
                   },),

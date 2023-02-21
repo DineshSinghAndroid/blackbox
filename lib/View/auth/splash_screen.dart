@@ -38,19 +38,15 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-        body: Stack(
-      children: [
-        Container(
-          height: screenSize.width * 45,
-          decoration: const BoxDecoration(color: Colors.white),
-        ),
-        Positioned(
-          top: screenSize.width * 0.95,
-          left: screenSize.width * 0.04,
-          child: Image.asset("assets/images/bbx.jpeg"),
-        ),
-      ],
-    ));
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Center(
+            child:  Image.asset("assets/images/bbx.jpeg"),
+
+
+
+    ),
+        ));
   }
 
     init() async {

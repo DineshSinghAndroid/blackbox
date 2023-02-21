@@ -137,20 +137,20 @@ class _ListedBarcodesState extends State<ListedBarcodes> {
                               ),
                             ],
                           ),
-                          CommonButton(
-                            "Update",
-                                () async {
-                                    updateAssets(
-                                        studentsdata[i].macID.toString(),
-                                        studentsdata[i].name.toString(),
-                                      context,
-                                    ).then((value) async {
-                                      Fluttertoast.showToast(
-                                          msg: value.message.toString());
-                                      Get.toNamed('');
-                                });
-                            },
-                          ),
+                          // CommonButton(
+                          //   "Update",
+                          //       () async {
+                          //           updateAssets(
+                          //               studentsdata[i].macID.toString(),
+                          //               studentsdata[i].name.toString(),
+                          //             context,
+                          //           ).then((value) async {
+                          //             Fluttertoast.showToast(
+                          //                 msg: value.message.toString());
+                          //             Get.toNamed('');
+                          //       });
+                          //   },
+                          // ),
                         ],
                       ),
                     ),
