@@ -13,7 +13,8 @@ Future<ModelForgotPassword> forgotEmail(username, BuildContext context) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context).insert(loader);
   try {
-    var auth = "https://bbxlite.azurewebsites.net/api/forgetPassword?code=gfTNBXUuZJA38itPp4DS38cgv3ngUxu0CDRDNV7oow0nAzFuzVZA4A==";
+    var auth =
+        "https://bbxlite.azurewebsites.net/api/forgetPassword?code=gfTNBXUuZJA38itPp4DS38cgv3ngUxu0CDRDNV7oow0nAzFuzVZA4A==";
 
     var map = <String, dynamic>{};
     map['username'] = username;

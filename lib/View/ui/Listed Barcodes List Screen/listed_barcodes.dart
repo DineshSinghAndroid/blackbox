@@ -1,15 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
+ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
-
-import '../../../Utils/button.dart';
-import '../../../repository/update_assetname_repo.dart';
-import '../DeviceDetails/device_details.dart';
-import '../FetchedData/fetchData.dart';
 import '../Home/ScannerListConstructor.dart';
 import '../ShowBecoanData/showBecoanData.dart';
 
@@ -109,8 +101,8 @@ class _ListedBarcodesState extends State<ListedBarcodes> {
                                         fontSize: 15,
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600),
-                                  )
-                                ],
+                                  ),
+                                 ],
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,

@@ -16,8 +16,10 @@ import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../Model/getBeacoanListModel/getBeaconListModel.dart';
 import '../../../Utils/WebConstants.dart';
 import '../../../repository/device_register_repository.dart';
+import '../../../repository/get_becaon_list/get_beacoan_list.dart';
 import '../../../repository/update_assetname_repo.dart';
 import '../../../router/MyRouter.dart';
 import '../Listed Barcodes List Screen/listed_barcodes.dart';
@@ -82,6 +84,16 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                 height: 40,
               ),
               Image.asset('assets/images/bbx.jpeg'),
+              Container(
+                   color: Colors.blue,
+                  padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                  child: MaterialButton(onPressed: (){
+                    getBeaconListrepo('1111444411',context).then((value) {
+                      print(GetBeaconListModel().assetName.toString());
+
+                    });
+                  },child: Text("Fetch data"),))
+              ,
               SizedBox(
                 height: _height / 3,
               ),
@@ -293,17 +305,14 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                       ).then((value) async {
                         if (value.message == 'Successfully registered device with your account') {
                           print(value.message);
-                          //insert data to database
-                          // await DatabaseHelper.instance.insertRecord({
-                          //   DatabaseHelper.deviceName: deviceNameController.text,
-                          // });
 
-                          studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
+
+                            studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
                           print(deviceNameController.text.toString());
-                          // Get.back();
-                          Navigator.pop(context);
-                          // Navigator.pop(context);
-                        } else if (value.message == "Beacon already registered.") {
+                           Navigator.pop(context);
+                        }
+
+                        else if (value.message == "Beacon already registered.") {
                           return showDialog(
                             barrierDismissible: false,
                             context: context,
@@ -335,7 +344,8 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                                     ),
                                     TextFormField(
                                         controller: deviceNameController,
-                                        decoration: (InputDecoration(
+                                        decoration: (
+                                            InputDecoration(
                                           filled: true,
                                           fillColor: Colors.grey.withOpacity(0.3),
                                           enabledBorder: InputBorder.none,
@@ -343,8 +353,9 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                                           errorBorder: InputBorder.none,
                                           focusedBorder: InputBorder.none,
                                           border: InputBorder.none,
-                                          hintText: "Device 001 ",
-                                        ))),
+                                          hintText: "Device 001",
+                                        ))
+                                    ),
                                     const SizedBox(
                                       height: 10,
                                     ),
@@ -377,7 +388,8 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                                         onPressed: () {
                                           print(barcodeScanRes.toString());
                                           setState(() {});
-                                          if (_scanBarcode != '-1' && deviceNameController.text != '') {
+                                          if (_scanBarcode != '-1' && deviceNameController.text != '')
+                                          {
                                             updateAssets(qrCode: _scanBarcode.toString(), asset_name: deviceNameController.text.toString(), context: context).then((value) async {
                                               studentsdata[studentsdata.indexWhere((element) => element.macID == _scanBarcode.toString())] =
                                                   Student(macID: _scanBarcode, name: deviceNameController.text.toString());
@@ -387,14 +399,21 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                                               Navigator.pop(context);
                                               Navigator.pop(context);
                                             });
+                                            studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
 
                                             Navigator.pop(context);
                                             Navigator.pop(context);
                                           } else if (_scanBarcode == '-1') {
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
                                             Fluttertoast.showToast(msg: "Please Scan Again");
                                           } else if (deviceNameController.text == '') {
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
                                             Fluttertoast.showToast(msg: "Please Enter Device Name");
                                           } else {
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
                                             Fluttertoast.showToast(msg: "Please Scan Correct Barcode");
                                           }
                                         },

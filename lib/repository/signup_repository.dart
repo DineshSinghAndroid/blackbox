@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:blackbox/View/auth/login_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
@@ -34,7 +36,14 @@ Future<ModelRegister> signupRepo({name, phone , email, password ,username,contex
       Helpers.hideLoader(loader);
       print('SERVER RESPONSE::${response.statusCode}');
       return ModelRegister.fromJson(jsonDecode(response.body));
-    } else {
+    }
+    else if (response.statusCode == 412) {
+      Helpers.hideLoader(loader);
+      print('SERVER RESPONSE::${response.statusCode}');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+      return ModelRegister.fromJson(jsonDecode(response.body));
+    }
+    else {
       Helpers.hideLoader(loader);
       print('SERVER RESPONSE::${response.body}');
       return ModelRegister.fromJson(jsonDecode(response.body));
