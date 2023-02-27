@@ -35,7 +35,7 @@ class BarcodeScanner extends StatefulWidget {
 ButtonState stateOnlyText = ButtonState.idle;
 ButtonState stateTextWithIcon = ButtonState.idle;
 String barcodeScanRes = '';
-String username = '';
+String username = '1111444411';
 String password = '';
 
 class _BarcodeScannerState extends State<BarcodeScanner> {
@@ -88,7 +88,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                    color: Colors.blue,
                   padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                   child: MaterialButton(onPressed: (){
-                    getBeaconListrepo('1111444411',context).then((value) {
+                    getBeaconList( ).then((value) {
                       print(GetBeaconListModel().assetName.toString());
 
                     });
@@ -307,7 +307,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                           print(value.message);
 
 
-                            studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
+                            // studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
                           print(deviceNameController.text.toString());
                            Navigator.pop(context);
                         }
@@ -391,15 +391,15 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                                           if (_scanBarcode != '-1' && deviceNameController.text != '')
                                           {
                                             updateAssets(qrCode: _scanBarcode.toString(), asset_name: deviceNameController.text.toString(), context: context).then((value) async {
-                                              studentsdata[studentsdata.indexWhere((element) => element.macID == _scanBarcode.toString())] =
-                                                  Student(macID: _scanBarcode, name: deviceNameController.text.toString());
+                                              // studentsdata[studentsdata.indexWhere((element) => element.macID == _scanBarcode.toString())] =
+                                              //     Student(macID: _scanBarcode, name: deviceNameController.text.toString());
                                               print(studentsdata.length);
 
                                               Fluttertoast.showToast(msg: value.message.toString());
                                               Navigator.pop(context);
                                               Navigator.pop(context);
                                             });
-                                            studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
+                                            // studentsdata.add(Student(macID: _scanBarcode, name: deviceNameController.text));
 
                                             Navigator.pop(context);
                                             Navigator.pop(context);

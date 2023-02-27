@@ -15,7 +15,6 @@ import '../Utils/connection_validater.dart';
 import '../View/auth/login_screen.dart';
 import '../View/ui/Home/home_barcode_scanner.dart';
 import '../main.dart';
-
 Future<ModelCommonResponse?> loginRepo({phone, password, context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context).insert(loader);

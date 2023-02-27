@@ -1,7 +1,7 @@
 class Student{
-  dynamic ? macID;
-  String? name;
+  dynamic ? beacon;
+  String? assetName;
 
-  Student({required this.macID , required this.name});
+  Student({required this.assetName , required this.beacon});
 }
 
