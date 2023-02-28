@@ -1,4 +1,3 @@
-
 import 'package:blackbox/View/ui/FetchedData/fetchData.dart';
 import 'package:blackbox/router/MyRouter.dart';
 import 'package:drift/native.dart';
@@ -8,13 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
-import 'View/ui/Listed Barcodes List Screen/testting.dart';
-
-void main()  {
-   runApp(   const MyApp());
+void main() {
+  runApp(const MyApp());
 }
-class MyApp extends StatelessWidget {
 
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -24,14 +21,14 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context , child) {
+      builder: (context, child) {
         return GetMaterialApp(
           darkTheme: ThemeData.light(),
           defaultTransition: Transition.rightToLeft,
           debugShowCheckedModeBanner: false,
           initialRoute: "/splash",
-           getPages: MyRouter.route,
-            // home: MyLundApp(),
+          getPages: MyRouter.route,
+          // home: IndexPage(),
           theme: ThemeData(
               fontFamily: 'Raleway',
               primaryColor: Colors.black,
@@ -39,14 +36,10 @@ class MyApp extends StatelessWidget {
               scrollbarTheme: const ScrollbarThemeData().copyWith(
                 thumbColor: MaterialStateProperty.all(Colors.white),
               ),
-              colorScheme: ColorScheme.fromSwatch()
-                  .copyWith(secondary: Colors.white)
-          ),
+              colorScheme:
+                  ColorScheme.fromSwatch().copyWith(secondary: Colors.white)),
         );
       },
     );
   }
 }
-
-
-

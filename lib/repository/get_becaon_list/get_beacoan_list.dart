@@ -7,9 +7,6 @@ import 'package:http/http.dart' as http;
 import '../../Model/getBeacoanListModel/getBeaconListModel.dart';
 
 Future<GetBeaconListModel> getBeaconList({username}) async {
-  GetBeaconListModel ?model;
-  // OverlayEntry loader = Helpers.overlayLoader(context);
-  // Overlay.of(context).insert(loader);
   try {
     var auth =
         "https://bbxlite.azurewebsites.net/api/getSensorsList?code=LxkCOnsItt5Xn0xSFdu5Y4MgW1_st6AzNrCmIqK_ftL-AzFumJXnFg==";
@@ -20,17 +17,17 @@ Future<GetBeaconListModel> getBeaconList({username}) async {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.acceptHeader: 'application/json',
     };
-    http.Response response = await http.post(Uri.parse(auth), headers: headers,body: jsonEncode(map));
+    http.Response response = await http.post(Uri.parse(auth),
+        headers: headers, body: jsonEncode(map));
     print(response.statusCode);
     if (response.statusCode == 200) {
-print(response.body.toString());
+      print(response.body.toString());
 
       return GetBeaconListModel.fromJson(jsonDecode(response.body));
-    }  else {
+    } else {
       return GetBeaconListModel.fromJson(jsonDecode(response.body));
-
     }
   } catch (e) {
-     return GetBeaconListModel();
+    return GetBeaconListModel();
   }
 }
