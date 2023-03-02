@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen>
                           ),
                           hint: 'Phone Number...',
                           controller: phoneController,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([

@@ -129,19 +129,25 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     height: 15,
                   ),
                   CommonButton('Verify', () {
-                    if (otpController.text != otp) {
-                      Fluttertoast.showToast(msg: "otp is not matched ");
-                    } else if (otpController.text == otp) {
-                      verifyForgotEmail(
-                          email.toString(),
-                          newPassword.text.toString(),
-                          otp.toString(),
-                        context)
-                          .then((value) {
-                        Fluttertoast.showToast(msg: value.message.toString());
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),))
-                        ;
-                      });
+
+                    if(newPassword.text.length > 4){
+                      if (otpController.text != otp) {
+                        Fluttertoast.showToast(msg: "otp is not matched ");
+                      } else if (otpController.text == otp) {
+                        verifyForgotEmail(
+                            email.toString(),
+                            newPassword.text.toString(),
+                            otp.toString(),
+                            context)
+                            .then((value) {
+                          Fluttertoast.showToast(msg: value.message.toString());
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),))
+                          ;
+                        });
+                      }
+
+                    }else{
+                      Fluttertoast.showToast(msg: "Please enter password");
                     }
                   },),
 

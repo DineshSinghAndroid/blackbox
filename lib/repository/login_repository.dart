@@ -40,17 +40,18 @@ Future<ModelCommonResponse?> loginRepo({phone, password, context}) async {
       print(response.statusCode.toString());
 
       if (response.statusCode == 200) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => BarcodeScanner(),
-            ));
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BarcodeScanner(),), (route) => false);
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => BarcodeScanner(),
+        //     ));
         var data = json.decode(response.body);
         log(data);
 
         String ApiMessage = json.decode(response.body)["message"].toString();
         print(ApiMessage);
-
+        getDKSbeacons(context);
         Helpers.hideLoader(loader);
         print('SERVER RESPONSE::${response.statusCode}');
         Fluttertoast.showToast(msg: "Login Done");

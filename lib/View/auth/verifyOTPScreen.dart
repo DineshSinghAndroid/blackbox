@@ -50,7 +50,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
     setState(() {
       username = widget.usernames;
       password = widget.passwords;
-      print("USERNAME AND PASSWORD COMING FROM SIGN IS " +username.toString() + password.toString());
+      print("USERNAME AND PASSWORD COMING FROM SIGN IS $username$password");
     });
   }
 

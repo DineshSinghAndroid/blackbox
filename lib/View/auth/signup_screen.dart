@@ -218,7 +218,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                       SharedPreferences prefs = await SharedPreferences.getInstance();
                                       String   uss =    prefs.setString(WebConstants.USERNAME, phoneController.text.toString()).toString();
                                       String pss =     prefs.setString(WebConstants.PASSWORD, passwordController.text.toString()).toString();
-                                      print("This is setet to shared prefres + "+uss.toString() +pss.toString());
+                                      print("This is setet to shared prefres + $uss$pss");
                                       // Get.offAllNamed(MyRouter.verifyOtp);
                                       Navigator.push(
                                           context,
