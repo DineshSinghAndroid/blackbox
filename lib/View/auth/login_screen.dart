@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
     );
 
     _animation = Tween<double>(begin: .7, end: 1).animate(
@@ -93,15 +93,15 @@ class _LoginScreenState extends State<LoginScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(child: SizedBox()),
+                  const Expanded(child: SizedBox()),
                   Expanded(
                     flex: 4,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(),
+                        const SizedBox(),
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 50),
+                          margin: const EdgeInsets.symmetric(horizontal: 50),
                           child: Image.asset('assets/images/bbx.jpeg'),
                         ),
                         SizedBox(height: Get.height * 0.08),
@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen>
                             MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         CommonTextFieldWidget(
@@ -137,13 +137,16 @@ class _LoginScreenState extends State<LoginScreen>
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
+                            // PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+                            //     errorText:
+                            //         "password must be 8 character long and contain \n1 alphabetic, \n1 special character and \n1 number"),
                             RequiredValidator(
                                 errorText: 'Please Enter Password'),
                             //MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
                         ),
                         //component1(Icons.lock_outline, 'Password...', true, false , password),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Align(
@@ -184,22 +187,24 @@ class _LoginScreenState extends State<LoginScreen>
                                         })
                                       }
                                     : Fluttertoast.showToast(
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.TOP,
                                         msg: "Incorrect Username or Password");
                               }
                             },
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Align(
                           alignment: Alignment.center,
                           child: RichText(
                             text: TextSpan(
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 14),
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 14),
                               children: [
-                                TextSpan(
+                                const TextSpan(
                                   text: 'New Consumer? ',
                                   style: TextStyle(
                                       color: Colors.black,
@@ -208,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                                 TextSpan(
                                     text: 'Click Here to Register',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 14,
                                         color: AppTheme.primaryColorBlue,
                                         fontWeight: FontWeight.w500
@@ -222,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
 
@@ -231,20 +236,20 @@ class _LoginScreenState extends State<LoginScreen>
                           child: InkWell(
                             onTap: () {},
                             child: Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 10),
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                   color: AppTheme.primaryColorBlue,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5))),
-                              child: Text(
+                              child: const Text(
                                 "View Device Data",
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 100,
                         ),
                         Align(
@@ -259,7 +264,7 @@ class _LoginScreenState extends State<LoginScreen>
                                             phoneController.text.toString()),
                                   ));
                             },
-                            child: Text(
+                            child: const Text(
                               "Forgot Password ?",
                               style:
                                   TextStyle(color: Colors.blue, fontSize: 18),
@@ -303,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen>
           border: InputBorder.none,
           hintMaxLines: 1,
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 14,
             color: AppTheme.black,
           ),

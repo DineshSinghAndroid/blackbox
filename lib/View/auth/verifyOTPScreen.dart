@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -16,25 +17,26 @@ import '../../router/MyRouter.dart';
 import '../ui/Home/home_barcode_scanner.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
-  String  passwords;
+  String passwords;
 
-   String usernames;
-
-
-
+  String usernames;
 
   // VerifyOTPScreen() ;
-  VerifyOTPScreen({required this.usernames,required this.passwords}) ;
+  VerifyOTPScreen({required this.usernames, required this.passwords});
   @override
   _VerifyOTPScreenState createState() => _VerifyOTPScreenState();
 }
 
 class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   String otp = '';
-  String username ='';
+  String username = '';
   String password = '';
-
+  int secondsRemaining = 60;
+  bool enableResend = false;
+  late Timer timer;
+  @override
   void initState() {
+    super.initState();
     init();
   }
 
@@ -51,6 +53,18 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
       username = widget.usernames;
       password = widget.passwords;
       print("USERNAME AND PASSWORD COMING FROM SIGN IS $username$password");
+    });
+
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (secondsRemaining != 0) {
+        setState(() {
+          secondsRemaining--;
+        });
+      } else {
+        setState(() {
+          enableResend = true;
+        });
+      }
     });
   }
 
@@ -147,7 +161,10 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (otpController.text != otp) {
-                      Fluttertoast.showToast(msg: 'Otp is not matched');
+                      Fluttertoast.showToast(
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.TOP,
+                          msg: 'Otp is not matched');
                     } else if (otpController.text == otp) {
                       verifyOtp(
                         username: widget.usernames,
@@ -160,7 +177,10 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         prefs.setBool(WebConstants.IS_USER_LOGGED_IN, true);
-                        Fluttertoast.showToast(msg: value.message.toString());
+                        Fluttertoast.showToast(
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.TOP,
+                            msg: value.message.toString());
                         if (value.message == "Account activated.") {
                           Get.offAllNamed(
                             MyRouter.barcodeScreen,
@@ -204,14 +224,24 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
               const SizedBox(
                 height: 18,
               ),
-              const Text(
-                "Resend New Code",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
+              Visibility(
+                visible: enableResend ? true : false,
+                child: InkWell(
+                  onTap: enableResend ? _resendCode : null,
+                  child: const Text(
+                    "Resend New Code",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                textAlign: TextAlign.center,
+              ),
+              Text(
+                'Resend otp after $secondsRemaining seconds',
+                style: const TextStyle(color: Colors.black, fontSize: 10),
               ),
             ],
           ),
@@ -300,5 +330,19 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
         ),
       ),
     );
+  }
+
+  void _resendCode() {
+    //other code here
+    setState(() {
+      secondsRemaining = 60;
+      enableResend = false;
+    });
+  }
+
+  @override
+  dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }

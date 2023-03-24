@@ -41,28 +41,45 @@ Future<void> handleErrorWithStatus(
             );
           }),
           (Route route) => false);
-      Fluttertoast.showToast(msg: "Session expired, Login again");
+      Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          msg: "Session expired, Login again");
     } else if (statusCode == 400) {
-      Fluttertoast.showToast(msg: "Invalid request!");
+      Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          msg: "Invalid request!");
     } else if (statusCode == 403) {
       Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
           msg: "You don't have permission to access the requested resource");
-    } else if
-    (statusCode == 404) {
-      Fluttertoast.showToast(msg: "The requested resource does not exist");
-    }
-    else if (statusCode == 500)
-    {
-      Fluttertoast.showToast(msg: "Internal Server Error");
-    } else if (statusCode == 503)
-    {
-      Fluttertoast.showToast(msg: "Service Unavailable");
+    } else if (statusCode == 404) {
+      Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          msg: "The requested resource does not exist");
+    } else if (statusCode == 500) {
+      Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          msg: "Internal Server Error");
+    } else if (statusCode == 503) {
+      Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          msg: "Service Unavailable");
     } else if (statusCode == 111) {
-      Fluttertoast.showToast(msg: "Service Connection Refused");
-    }
-    else {
-
-      Fluttertoast.showToast(msg: "Something went wrong");
+      Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          msg: "Service Connection Refused");
+    } else {
+      Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          msg: "Something went wrong");
     }
   } catch (_, stackTrace) {
     SentryExemption.sentryExemption(_, stackTrace);

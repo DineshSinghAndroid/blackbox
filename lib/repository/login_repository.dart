@@ -15,6 +15,7 @@ import '../Utils/connection_validater.dart';
 import '../View/auth/login_screen.dart';
 import '../View/ui/Home/home_barcode_scanner.dart';
 import '../main.dart';
+
 Future<ModelCommonResponse?> loginRepo({phone, password, context}) async {
   OverlayEntry loader = Helpers.overlayLoader(context);
   Overlay.of(context).insert(loader);
@@ -40,7 +41,12 @@ Future<ModelCommonResponse?> loginRepo({phone, password, context}) async {
       print(response.statusCode.toString());
 
       if (response.statusCode == 200) {
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BarcodeScanner(),), (route) => false);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BarcodeScanner(),
+            ),
+            (route) => false);
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
@@ -54,7 +60,10 @@ Future<ModelCommonResponse?> loginRepo({phone, password, context}) async {
         getDKSbeacons(context);
         Helpers.hideLoader(loader);
         print('SERVER RESPONSE::${response.statusCode}');
-        Fluttertoast.showToast(msg: "Login Done");
+        Fluttertoast.showToast(
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            msg: "Login Done");
       } else {
         Helpers.hideLoader(loader);
         if (response.statusCode == 401) {
@@ -64,23 +73,44 @@ Future<ModelCommonResponse?> loginRepo({phone, password, context}) async {
           prefs.setBool(WebConstants.IS_USER_LOGGED_IN, false);
           // global.channel.sink.close();
           Fluttertoast.showToast(
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               msg: json.decode(response.body)["message"].toString());
         } else if (response.statusCode == 400) {
-          Fluttertoast.showToast(msg: "Invalid request!");
+          Fluttertoast.showToast(
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              msg: "Invalid request!");
         } else if (response.statusCode == 403) {
           Fluttertoast.showToast(
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               msg:
                   "You don't have permission to access the requested resource");
         } else if (response.statusCode == 404) {
-          Fluttertoast.showToast(msg: "The requested resource does not exist");
+          Fluttertoast.showToast(
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              msg: "The requested resource does not exist");
         } else if (response.statusCode == 500) {
-          Fluttertoast.showToast(msg: "Internal Server Error");
+          Fluttertoast.showToast(
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              msg: "Internal Server Error");
         } else if (response.statusCode == 503) {
-          Fluttertoast.showToast(msg: "Service Unavailable");
+          Fluttertoast.showToast(
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              msg: "Service Unavailable");
         } else if (response.statusCode == 111) {
-          Fluttertoast.showToast(msg: "Service Connection Refused");
+          Fluttertoast.showToast(
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
+              msg: "Service Connection Refused");
         } else {
           Fluttertoast.showToast(
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.TOP,
               msg: json.decode(response.body)["message"].toString());
         }
       }
@@ -97,6 +127,8 @@ Future<ModelCommonResponse?> loginRepo({phone, password, context}) async {
     Helpers.hideLoader(loader);
 
     Fluttertoast.showToast(
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
         msg: "Something went wrong, Failed connection with server.");
     return null;
   }

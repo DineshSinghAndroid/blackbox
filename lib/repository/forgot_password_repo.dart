@@ -22,20 +22,23 @@ Future<ModelForgotPassword> forgotEmail(username, BuildContext context) async {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.acceptHeader: 'application/json',
     };
-    http.Response response = await http.post(Uri.parse(auth), body: jsonEncode(map), headers: headers);
+    http.Response response = await http.post(Uri.parse(auth),
+        body: jsonEncode(map), headers: headers);
     if (response.statusCode == 200) {
       Helpers.hideLoader(loader);
       return ModelForgotPassword.fromJson(jsonDecode(response.body));
     } else if (response.statusCode == 412) {
       Helpers.hideLoader(loader);
-      Fluttertoast.showToast(msg: "User Not Registered");
+      Fluttertoast.showToast(
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          msg: "User Not Registered");
       Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => SignupScreen(),
           ));
-      return ModelForgotPassword(
-       );
+      return ModelForgotPassword();
     } else {
       Helpers.hideLoader(loader);
       return ModelForgotPassword(

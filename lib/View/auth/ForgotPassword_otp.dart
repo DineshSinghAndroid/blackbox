@@ -34,8 +34,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
     super.initState();
     email = Get.arguments[0];
     otp = Get.arguments[1];
-    print("EMail and otp coming from previous screen is $email $otp")
-    ;
+    print("EMail and otp coming from previous screen is $email $otp");
   }
 
   final formKey = GlobalKey<FormState>();
@@ -65,23 +64,23 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   const Align(
                     alignment: Alignment.center,
                     child: Text(
-                       'Enter Verification Code',
-                      style:  TextStyle(
+                      'Enter Verification Code',
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black54,),
-
+                        color: Colors.black54,
+                      ),
                     ),
                   ),
                   SizedBox(
-                    height:15,
+                    height: 15,
                   ),
                   CommonTextFieldWidget(
                     hint: "New Password",
                     controller: newPassword,
                   ),
                   SizedBox(
-                    height:15,
+                    height: 15,
                   ),
                   Container(
                     padding: EdgeInsets.only(
@@ -128,29 +127,41 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   SizedBox(
                     height: 15,
                   ),
-                  CommonButton('Verify', () {
-
-                    if(newPassword.text.length > 4){
-                      if (otpController.text != otp) {
-                        Fluttertoast.showToast(msg: "otp is not matched ");
-                      } else if (otpController.text == otp) {
-                        verifyForgotEmail(
-                            email.toString(),
-                            newPassword.text.toString(),
-                            otp.toString(),
-                            context)
-                            .then((value) {
-                          Fluttertoast.showToast(msg: value.message.toString());
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),))
-                          ;
-                        });
+                  CommonButton(
+                    'Verify',
+                    () {
+                      if (newPassword.text.length > 4) {
+                        if (otpController.text != otp) {
+                          Fluttertoast.showToast(
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.TOP,
+                              msg: "otp is not matched ");
+                        } else if (otpController.text == otp) {
+                          verifyForgotEmail(
+                                  email.toString(),
+                                  newPassword.text.toString(),
+                                  otp.toString(),
+                                  context)
+                              .then((value) {
+                            Fluttertoast.showToast(
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.TOP,
+                                msg: value.message.toString());
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ));
+                          });
+                        }
+                      } else {
+                        Fluttertoast.showToast(
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.TOP,
+                            msg: "Please enter password");
                       }
-
-                    }else{
-                      Fluttertoast.showToast(msg: "Please enter password");
-                    }
-                  },),
-
+                    },
+                  ),
                   SizedBox(
                     height: 15,
                   ),

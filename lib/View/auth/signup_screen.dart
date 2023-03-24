@@ -25,7 +25,8 @@ class SignupScreen extends StatefulWidget {
   _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderStateMixin {
+class _SignupScreenState extends State<SignupScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -68,7 +69,6 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     _controller.forward();
   }
 
-
   @override
   void dispose() {
     _controller.dispose();
@@ -96,11 +96,11 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                         Padding(
-                           padding: EdgeInsets.symmetric(horizontal: 40,vertical: 90),
-                           child: Image.asset('assets/images/bbx.jpeg'),
-                         )
-                        ,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 90),
+                          child: Image.asset('assets/images/bbx.jpeg'),
+                        ),
 
                         CommonTextFieldWidget(
                           prefix: Icon(
@@ -120,7 +120,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                         SizedBox(
                           height: 20,
                         ),
-                         CommonTextFieldWidget(
+                        CommonTextFieldWidget(
                           prefix: Icon(
                             Icons.account_circle_outlined,
                             color: Colors.black54.withOpacity(0.4),
@@ -131,7 +131,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
-                            RequiredValidator(errorText: 'Please enter phone number'),
+                            RequiredValidator(
+                                errorText: 'Please enter phone number'),
                             MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
                         ),
@@ -150,7 +151,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
-                            EmailValidator(errorText: 'Please enter valid email'),
+                            EmailValidator(
+                                errorText: 'Please enter valid email'),
                             RequiredValidator(errorText: 'Please enter name'),
                             //MinLengthValidator(10, errorText: 'Invalid Number'),
                           ]),
@@ -186,6 +188,9 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                           textInputAction: TextInputAction.next,
                           bgColor: Colors.black54.withOpacity(0.4),
                           validator: MultiValidator([
+                            PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+                                errorText:
+                                    "password must be 8 character long and contain \n1 alphabetic, \n1 special character and \n1 number"),
                             RequiredValidator(
                                 errorText: 'Please Enter Password'),
                             //MinLengthValidator(10, errorText: 'Invalid Number'),
@@ -199,10 +204,16 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                           alignment: Alignment.center,
                           child: CommonButton(
                             "SIGN-IN",
-                                () {
+                            () {
                               if (formkey.currentState!.validate()) {
-                                if (nameController.text.length < 3 || emailController.text.length < 3 || phoneController.text.length < 10 || passwordController.text.length < 8) {
-                                  Fluttertoast.showToast(msg: "Please Fill all data");
+                                if (nameController.text.length < 3 ||
+                                    emailController.text.length < 3 ||
+                                    phoneController.text.length < 10 ||
+                                    passwordController.text.length < 8) {
+                                  Fluttertoast.showToast(
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.TOP,
+                                      msg: "Please Fill all data");
                                 } else {
                                   //register(name.text.trim(), phone.text.trim(), email.text.trim(), password.text.trim().toString());
                                   signupRepo(
@@ -213,29 +224,49 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                     context: context,
                                   ).then((value) async {
                                     log(jsonEncode(value));
-                                    Fluttertoast.showToast(msg: value.message.toString());
-                                    if (value.message == "OTP successfully send to your email.") {
-                                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                                      String   uss =    prefs.setString(WebConstants.USERNAME, phoneController.text.toString()).toString();
-                                      String pss =     prefs.setString(WebConstants.PASSWORD, passwordController.text.toString()).toString();
-                                      print("This is setet to shared prefres + $uss$pss");
+                                    Fluttertoast.showToast(
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.TOP,
+                                        msg: value.message.toString());
+                                    if (value.message ==
+                                        "OTP successfully send to your email.") {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      String uss = prefs
+                                          .setString(WebConstants.USERNAME,
+                                              phoneController.text.toString())
+                                          .toString();
+                                      String pss = prefs
+                                          .setString(
+                                              WebConstants.PASSWORD,
+                                              passwordController.text
+                                                  .toString())
+                                          .toString();
+                                      print(
+                                          "This is setet to shared prefres + $uss$pss");
                                       // Get.offAllNamed(MyRouter.verifyOtp);
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => VerifyOTPScreen(
-                                              usernames: phoneController.text.toString(),
-                                              passwords: passwordController.text.toString(),
+                                            builder: (context) =>
+                                                VerifyOTPScreen(
+                                              usernames: phoneController.text
+                                                  .toString(),
+                                              passwords: passwordController.text
+                                                  .toString(),
                                             ),
                                           ));
                                     }
                                     // else {
-                                    //   Fluttertoast.showToast(msg: "Something went Wrong");
+                                    //   Fluttertoast.showToast(toastLength:Toast.LENGTH_LONG,gravity:ToastGravity.TOP,msg: "Something went Wrong");
                                     // }
                                   });
                                 }
                               } else {
-                                Fluttertoast.showToast(msg: "Please Fill All Fields!");
+                                Fluttertoast.showToast(
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.TOP,
+                                    msg: "Please Fill All Fields!");
                               }
                             },
                           ),
@@ -252,7 +283,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                             RichText(
                               text: TextSpan(
                                 text: 'Login to existing Account !',
-                                style: TextStyle(color: AppTheme.primaryColorBlue),
+                                style:
+                                    TextStyle(color: AppTheme.primaryColorBlue),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.push(
@@ -262,6 +294,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                                         ));
                                     HapticFeedback.lightImpact();
                                     Fluttertoast.showToast(
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.TOP,
                                       msg: 'Login to continue',
                                     );
                                   },
@@ -271,7 +305,7 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
                         ),
                       ],
                     ),
-                    ],
+                  ],
                 ),
               ),
             ),
@@ -281,7 +315,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
     );
   }
 
-  Widget component1(IconData icon, String hintText, bool isPassword, bool isEmail, Controller, type) {
+  Widget component1(IconData icon, String hintText, bool isPassword,
+      bool isEmail, Controller, type) {
     double _width = MediaQuery.of(context).size.width;
     return Container(
       height: Get.height * 0.08,
@@ -318,7 +353,8 @@ class _SignupScreenState extends State<SignupScreen> with SingleTickerProviderSt
 
 class MyBehavior extends ScrollBehavior {
   @override
-  Widget buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) {
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
     return child;
   }
 }

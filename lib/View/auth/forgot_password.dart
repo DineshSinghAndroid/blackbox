@@ -33,7 +33,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              Padding(padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 100), child: Image.asset('assets/images/bbx.jpeg')),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 100),
+                  child: Image.asset('assets/images/bbx.jpeg')),
               CommonTextFieldWidget(
                 hint: "Phone",
                 controller: username,
@@ -52,12 +55,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         context,
                       ).then((value) async {
                         if (value.message == "OTP successfully send.") {
-                          Fluttertoast.showToast(msg: value.message.toString());
-                          Get.toNamed(MyRouter.verifyOtp, arguments: ([username.text, value.otp.toString()]));
+                          Fluttertoast.showToast(
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.TOP,
+                              msg: value.message.toString());
+                          Get.toNamed(MyRouter.verifyOtp,
+                              arguments: ([
+                                username.text,
+                                value.otp.toString()
+                              ]));
                         }
                       });
                     } else {
-                      Fluttertoast.showToast(msg: "Please Enter Correct Phone Number");
+                      Fluttertoast.showToast(
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.TOP,
+                          msg: "Please Enter Correct Phone Number");
                     }
                   },
                 ),

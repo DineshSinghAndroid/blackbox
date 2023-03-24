@@ -21,16 +21,14 @@ class _SplashScreenState extends State<SplashScreen> {
     init();
   }
 
-
   void runMain() {
-
     if (isUserLoggedIn == true) {
-      Get.toNamed(MyRouter.barcodeScreen);
+      Get.offAllNamed(MyRouter.barcodeScreen);
       print(isUserLoggedIn);
     } else {
       print("going to login page $isUserLoggedIn");
 
-      Get.toNamed(MyRouter.loginScreen);
+      Get.offAllNamed(MyRouter.loginScreen);
     }
   }
 
@@ -39,24 +37,20 @@ class _SplashScreenState extends State<SplashScreen> {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Center(
-            child:  Image.asset("assets/images/bbx.jpeg"),
-
-
-
-    ),
-        ));
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Center(
+        child: Image.asset("assets/images/bbx.jpeg"),
+      ),
+    ));
   }
 
-    init() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      setState(() {
-        isUserLoggedIn = prefs.getBool(WebConstants.IS_USER_LOGGED_IN)??false;
-
-      });
-      Timer(const Duration(seconds: 3), () async {
-        runMain();
-      });
+  init() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isUserLoggedIn = prefs.getBool(WebConstants.IS_USER_LOGGED_IN) ?? false;
+    });
+    Timer(const Duration(seconds: 3), () async {
+      runMain();
+    });
   }
 }
