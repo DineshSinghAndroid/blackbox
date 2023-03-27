@@ -9,11 +9,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
-import '../Model/ModelRegistration.dart';
+import '../Model/SignUpModel/ModelRegistration.dart';
 import '../Utils/Helper.dart';
 import '../Utils/connection_validater.dart';
 import '../View/auth/login_screen.dart';
-import '../View/ui/Home/home_barcode_scanner.dart';
+ import '../View/ui/HomeScreen/home_barcode_scanner.dart';
 import '../main.dart';
 
 Future<ModelCommonResponse?> loginRepo({phone, password, context}) async {

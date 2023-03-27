@@ -1,19 +1,13 @@
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:blackbox/Utils/WebConstants.dart';
-import 'package:blackbox/View/ui/FetchedData/fetchData.dart';
-import 'package:blackbox/router/MyRouter.dart';
-import 'package:drift/native.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+ import 'package:blackbox/router/MyRouter.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+ import 'package:shared_preferences/shared_preferences.dart';
 import 'Model/getBeacoanListModel/getBeaconListModel.dart';
-import 'View/ui/Home/home_barcode_scanner.dart';
+import 'View/ui/HomeScreen/home_barcode_scanner.dart';
 
 void main() {
 

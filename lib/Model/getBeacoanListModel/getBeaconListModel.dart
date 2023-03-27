@@ -4,7 +4,7 @@ class GetBeaconListModel {
 
   GetBeaconListModel({this.beacon, this.assetName});
 
-  GetBeaconListModel.fromJson(Map<dynamic, dynamic> json) {
+  GetBeaconListModel.fromJson(Map<String, dynamic> json) {
     beacon = json['beacon'];
     assetName = json['asset_name'];
   }

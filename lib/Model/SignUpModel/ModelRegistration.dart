@@ -1,10 +1,10 @@
-class ModelRegister {
+class SignUpModel {
   String? message;
   int? otp;
 
-  ModelRegister({this.message, this.otp});
+  SignUpModel({this.message, this.otp});
 
-  ModelRegister.fromJson(Map<String, dynamic> json) {
+  SignUpModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     otp = json['otp'];
   }
@@ -16,4 +16,3 @@ class ModelRegister {
     return data;
   }
 }
-

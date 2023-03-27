@@ -6,15 +6,12 @@ import 'package:blackbox/repository/verifyotp_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Utils/Common_textfield.dart';
 import '../../Utils/WebConstants.dart';
 import '../../router/MyRouter.dart';
-import '../ui/Home/home_barcode_scanner.dart';
 
 class VerifyOTPScreen extends StatefulWidget {
   String passwords;
@@ -22,7 +19,7 @@ class VerifyOTPScreen extends StatefulWidget {
   String usernames;
 
   // VerifyOTPScreen() ;
-  VerifyOTPScreen({required this.usernames, required this.passwords});
+  VerifyOTPScreen({super.key, required this.usernames, required this.passwords});
   @override
   _VerifyOTPScreenState createState() => _VerifyOTPScreenState();
 }
@@ -285,52 +282,6 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
     );
   }
 
-  Widget _textFieldOTP({required bool first, last, controllers}) {
-    return Container(
-      //58080
-      height: 50,
-      width: 40,
-      child: AspectRatio(
-        aspectRatio: 1.0,
-        child: TextField(
-          controller: controllers,
-          autofocus: true,
-          onChanged: (value) {
-            if (value.length == 1 && last == false) {
-              FocusScope.of(context).nextFocus();
-            }
-            if (value.length == 0 && first == false) {
-              FocusScope.of(context).previousFocus();
-            }
-            setState(() {
-              finalOtp = otp1.text.toString() +
-                  otp2.text.toString() +
-                  otp3.text.toString() +
-                  otp4.text.toString() +
-                  otp5.text.toString();
-              print("FInal opt is :::::::::>>>>>>>>>>>>>>>>" +
-                  finalOtp.toString());
-            });
-          },
-          showCursor: false,
-          readOnly: false,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          keyboardType: TextInputType.number,
-          maxLength: 1,
-          decoration: InputDecoration(
-            counter: const Offstage(),
-            enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(width: 2, color: Colors.black12),
-                borderRadius: BorderRadius.circular(12)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(width: 2, color: Colors.blue),
-                borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
-      ),
-    );
-  }
 
   void _resendCode() {
     //other code here

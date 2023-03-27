@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:blackbox/View/auth/login_screen.dart';
-import 'package:blackbox/View/ui/Home/home_barcode_scanner.dart';
-import 'package:flutter/cupertino.dart';
+ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +23,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   TextEditingController otpController = TextEditingController();
   TextEditingController newPassword = TextEditingController();
 
-  var otp;
+  var otp='';
   var email = "";
 
   bool isFromSignup = false;
@@ -32,8 +31,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
   @override
   initState() {
     super.initState();
-    email = Get.arguments[0];
-    otp = Get.arguments[1];
+    // email = Get.arguments[0];
+    // otp = Get.arguments[1];
     print("EMail and otp coming from previous screen is $email $otp");
   }
 

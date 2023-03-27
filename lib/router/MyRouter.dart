@@ -4,7 +4,7 @@ import '../View/auth/login_screen.dart';
 import '../View/auth/signup_screen.dart';
 import '../View/auth/splash_screen.dart';
 import '../View/auth/verifyOTPScreen.dart';
-import '../View/ui/Home/home_barcode_scanner.dart';
+ import '../View/ui/HomeScreen/home_barcode_scanner.dart';
 import '../View/ui/Listed Barcodes List Screen/listed_barcodes.dart';
 
 class MyRouter {
